@@ -15,6 +15,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "itsiiie",
+      "name": "Shashank Singh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/111443349?v=4",
+      "profile": "https://itsiiie.github.io/resume-site/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
