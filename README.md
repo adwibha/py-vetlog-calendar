@@ -43,7 +43,7 @@ uv run paths
 uv run pytest tests/unit -v
 
 # Test a specific file
-uv run pytest tests/unit/test_user_service.py
+uv run pytest tests/unit/test_config.py
 
 # Test a matching keyword
 uv run pytest -k config
