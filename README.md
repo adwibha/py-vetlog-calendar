@@ -16,6 +16,9 @@ cd py-vetlog-calendar
 
 ```sh
 uv sync
+
+# To include dev dependencies (e.g., for testing):
+uv sync --extra dev
 ```
 
 3. (Optional) Verify installation
