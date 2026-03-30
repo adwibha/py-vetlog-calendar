@@ -23,7 +23,7 @@ def list_events():
     reader.listing_events()
 
 
-def prtint_paths():
+def print_paths():
     """Print paths"""
     settings = Settings()
     print(f"Token path: {settings.TOKEN_PATH}")
