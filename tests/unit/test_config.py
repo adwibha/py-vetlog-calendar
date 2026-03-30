@@ -17,6 +17,12 @@ def mock_env_vars():
         yield
 
 
+@pytest.fixture
+def clean_env():
+    with patch.dict(os.environ, {}, clear=True):
+        yield
+
+
 def test_settings_loads_from_env(mock_env_vars):
     settings = Settings()
     assert settings.TOKEN_PATH == "token_path_value/token.json"
