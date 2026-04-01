@@ -377,8 +377,12 @@ dependencies = [
     { name = "google-auth-httplib2" },
     { name = "google-auth-oauthlib" },
     { name = "pydantic-settings" },
-    { name = "pytest" },
     { name = "ruff" },
+]
+
+[package.optional-dependencies]
+dev = [
+    { name = "pytest" },
 ]
 
 [package.metadata]
@@ -387,9 +391,10 @@ requires-dist = [
     { name = "google-auth-httplib2", specifier = ">=0.0.3" },
     { name = "google-auth-oauthlib", specifier = ">=0.4.0" },
     { name = "pydantic-settings", specifier = ">=2.12.0" },
-    { name = "pytest", specifier = ">=9.0.1" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=9.0.1" },
     { name = "ruff", specifier = ">=0.14.5" },
 ]
+provides-extras = ["dev"]
 
 [[package]]
 name = "pyasn1"
