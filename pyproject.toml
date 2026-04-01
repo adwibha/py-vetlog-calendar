@@ -1,6 +1,6 @@
 [project]
 name = "py-vetlog-calendar"
-version = "1.0.0"
+version = "1.0.1"
 description = "Vetlog appointments organizer"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -10,12 +10,19 @@ dependencies = [
   "google-auth-oauthlib>=0.4.0",
   "google-auth-httplib2>=0.0.3",
   "google-api-python-client>=1.7.9",
+  "pydantic-settings>=2.12.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=9.0.1",
   "ruff>=0.14.5",
 ]
 
 [project.scripts]
 version = "vetlog_calendar.main:version_check"
 events = "vetlog_calendar.main:list_events"
+paths = "vetlog_calendar.main:print_paths"
 
 [build-system]
 requires = ["setuptools>=68", "wheel"]

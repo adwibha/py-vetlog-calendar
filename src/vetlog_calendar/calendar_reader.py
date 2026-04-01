@@ -21,14 +21,17 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-TOKEN_PATH = "/home/josdem/.calendar/token.json"
-CREDENTIALS_PATH = "/home/josdem/.calendar/credentials.json"
+from .shared.config import Settings
+
 SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
 
 
 class Reader:
     def listing_events(self):
         print("Listing events")
+        settings = Settings()
+        TOKEN_PATH = settings.TOKEN_PATH
+        CREDENTIALS_PATH = settings.CREDENTIALS_PATH
         creds = None
         if os.path.exists(TOKEN_PATH):
             creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)

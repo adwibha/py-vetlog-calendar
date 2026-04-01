@@ -13,6 +13,7 @@
 #  limitations under the License.
 
 from .calendar_reader import Reader
+from .shared.config import Settings
 from . import __project__, __version__
 
 
@@ -20,6 +21,13 @@ def list_events():
     """List events"""
     reader = Reader()
     reader.listing_events()
+
+
+def print_paths():
+    """Print paths"""
+    settings = Settings()
+    print(f"Token path: {settings.TOKEN_PATH}")
+    print(f"Credentials path: {settings.CREDENTIALS_PATH}")
 
 
 def version_check():

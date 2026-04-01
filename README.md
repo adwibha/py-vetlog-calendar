@@ -16,6 +16,9 @@ cd py-vetlog-calendar
 
 ```sh
 uv sync
+
+# To include dev dependencies (e.g., for testing):
+uv sync --extra dev
 ```
 
 3. (Optional) Verify installation
@@ -31,6 +34,22 @@ uv run version
 ```sh
 # List upcoming events
 uv run events
+
+# List user's token paths
+uv run paths
+```
+
+**Test**
+
+```sh
+# Test everything
+uv run pytest tests/unit -v
+
+# Test a specific file
+uv run pytest tests/unit/test_config.py
+
+# Test a matching keyword
+uv run pytest -k config
 ```
 
 **Format**
