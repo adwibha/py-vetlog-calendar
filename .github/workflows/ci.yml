@@ -37,7 +37,7 @@ jobs:
           fi
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2
+        uses: SonarSource/sonarcloud-github-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602 # v6.0.0
         with:
             args: >
               -Dsonar.projectKey=josdem_py-vetlog-calendar
