@@ -82,7 +82,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tbody>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/habartakh"><img src="https://avatars.githubusercontent.com/u/177358275?v=4?s=100" width="100px;" alt="Hajar Bartakh"/><br /><sub><b>Hajar Bartakh</b></sub></a><br /><a href="https://github.com/josdem/py-vetlog-calendar/commits?author=habartakh" title="Documentation">📖</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://itsiiie.github.io/resume-site/"><img src="https://avatars.githubusercontent.com/u/111443349?v=4?s=100" width="100px;" alt="Shashank Singh"/><br /><sub><b>Shashank Singh</b></sub></a><br /><a href="https://github.com/josdem/py-vetlog-calendar/commits?author=itsiiie" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://itsiiie.github.io/resume-site/"><img src="https://avatars.githubusercontent.com/u/111443349?v=4?s=100" width="100px;" alt="Shashank Singh"/><br /><sub><b>Shashank Singh</b></sub></a><br /><a href="https://github.com/josdem/py-vetlog-calendar/commits?author=itsiiie" title="Code">💻</a> <a href="#infra-itsiiie" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
     </tr>
   </tbody>
 </table>
