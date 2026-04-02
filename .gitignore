@@ -12,6 +12,7 @@ venv/
 
 # Artifacts
 .coverage
+coverage.xml
 htmlcov/
 
 # Sensitive

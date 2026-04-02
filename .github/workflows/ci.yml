@@ -27,11 +27,11 @@ jobs:
       - name: Lint with Ruff
         run: uv run ruff check .
 
-      - name: Run tests (if exist)
+      - name: Run tests with coverage
         run: |
           if [ -d "tests" ]; then
             echo "Running tests..."
-            uv run pytest -v
+            uv run pytest --cov=src --cov-report=xml --cov-report=html
           else
             echo "No tests found, skipping..."
           fi
