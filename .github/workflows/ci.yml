@@ -35,3 +35,12 @@ jobs:
           else
             echo "No tests found, skipping..."
           fi
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        with:
+            args: >
+              -Dsonar.projectKey=josdem_py-vetlog-calendar
+              -Dsonar.organization=josdem-io
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   
