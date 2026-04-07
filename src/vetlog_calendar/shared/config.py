@@ -17,11 +17,9 @@ class Settings(BaseSettings):
 
 
 @lru_cache
-def get_settings():
+def get_settings() -> Settings:
     """
-    Returns a cached instance of the Settings class.
-    """
-    """
+    Returns a cached instance of the Settings class,
     Returns a cached instance of Settings using lru_cache.
     This ensures that environment variables are read only once and
     repeated calls return the same Settings object.
