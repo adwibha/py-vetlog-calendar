@@ -18,6 +18,8 @@ def mock_db_env():
             "DB_NAME": "vetlog",
             "DB_USER": "vetlogUser",
             "DB_PASSWORD": "vetlogDB",
+            "TOKEN_PATH": "/path_to_the_file/token.json",
+            "CREDENTIALS_PATH": "/path_to_the_file/credentials.json",
         },
     ):
         yield
