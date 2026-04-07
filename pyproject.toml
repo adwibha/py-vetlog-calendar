@@ -12,6 +12,7 @@ dependencies = [
   "google-api-python-client>=1.7.9",
   "pydantic-settings>=2.12.0",
   "sqlmodel>=0.0.27",
+  "mysql-connector-python>=9.5.0",
 ]
 
 [project.optional-dependencies]
