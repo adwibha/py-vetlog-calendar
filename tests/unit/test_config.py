@@ -10,6 +10,10 @@ def mock_env_vars():
     with patch.dict(
         os.environ,
         {
+            "DB_HOST": "localhost",
+            "DB_NAME": "vetlog",
+            "DB_USER": "vetlogUser",
+            "DB_PASSWORD": "vetlogDB",
             "TOKEN_PATH": "token_path_value/token.json",
             "CREDENTIALS_PATH": "token_path_value/credentials.json",
         },
@@ -25,6 +29,10 @@ def clean_env():
 
 def test_settings_loads_from_env(mock_env_vars):
     settings = Settings()
+    assert settings.db_host == "localhost"
+    assert settings.db_name == "vetlog"
+    assert settings.db_user == "vetlogUser"
+    assert settings.db_password == "vetlogDB"
     assert settings.TOKEN_PATH == "token_path_value/token.json"
     assert settings.CREDENTIALS_PATH == "token_path_value/credentials.json"
 
