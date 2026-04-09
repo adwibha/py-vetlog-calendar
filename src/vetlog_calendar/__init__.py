@@ -12,6 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 import tomllib
 
@@ -21,9 +22,12 @@ __project__ = "vetlog-calendar"
 
 
 def _read_version() -> str:
-    pyproject_path = Path(__file__).resolve().parents[2] / "pyproject.toml"
-    with pyproject_path.open("rb") as pyproject_file:
-        return tomllib.load(pyproject_file)["project"]["version"]
+    try:
+        return version("py-vetlog-calendar")
+    except PackageNotFoundError:
+        pyproject_path = Path(__file__).resolve().parents[2] / "pyproject.toml"
+        with pyproject_path.open("rb") as pyproject_file:
+            return tomllib.load(pyproject_file)["project"]["version"]
 
 
 __version__ = _read_version()
