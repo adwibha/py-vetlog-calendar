@@ -16,7 +16,7 @@ from collections.abc import Sequence
 
 from sqlmodel import Session, select
 
-from vetlog_calendar.users import User
+from vetlog_calendar.users.model import User
 
 
 class UserRepository:
