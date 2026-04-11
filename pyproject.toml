@@ -26,6 +26,7 @@ dev = [
 version = "vetlog_calendar.main:version_check"
 events = "vetlog_calendar.main:list_events"
 paths = "vetlog_calendar.main:print_paths"
+users = "vetlog_calendar.main:list_users"
 
 [build-system]
 requires = ["setuptools>=68", "wheel"]
