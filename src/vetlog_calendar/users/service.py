@@ -12,6 +12,9 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+
+from collections.abc import Sequence
+from vetlog_calendar.users.model import User
 from vetlog_calendar.users.repository import UserRepository
 
 
@@ -19,6 +22,6 @@ class UserService:
     def __init__(self, repo: UserRepository) -> None:
         self.repo = repo
 
-    def get_all(self, user) -> bool:
+    def get_all(self, user) ->  Sequence[User]:
         """Return all users"""
-        return False
+        return self.repo.get_all()
