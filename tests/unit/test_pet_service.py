@@ -27,8 +27,7 @@ def mock_repo():
 
 def test_get_pets(mock_repo):
     """Get all pets"""
-    service = PetService(repository=mock_repo, vaccination_service=MagicMock())
-    pets = []
-    # Add logic to get all pets with pending vaccinations
-    mock_repo.get_pets_with_pending_vaccinations.return_value = pets
-    assert service.process_vaccinations() == pets
+    service = PetService(repository=mock_repo)
+    pets = [Pet(id=1, name="Sora")]
+    mock_repo.get_all.return_value = pets
+    assert service.get_all() == pets

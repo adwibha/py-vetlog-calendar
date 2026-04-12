@@ -12,33 +12,15 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License
 
-from typing import List, Tuple
+from typing import Sequence
 from sqlmodel import Session, select, text
 
-from vetlog_calendar.pets.model import Pet, Breed
+from vetlog_calendar.pets.model import Pet
 
 
 class PetRepository:
-    def __init__(self, session: Session):
+    def __init__(self, session: Session) -> None:
         self.session = session
 
-    def get_pets_with_pending_vaccinations(self) -> List[Tuple]:
-        # Emulating the original query logic:
-        # SELECT pet.id, pet.name, pet.birth_date, breed.type FROM pet, vaccination, breed WHERE ...
-        # Using raw SQL or SQLModel join. Using raw SQL for fidelity with original filtering logic first,
-        # or better, use SQLModel.
-
-        # Original: SELECT pet.id, pet.name, pet.birth_date, breed.type FROM pet, vaccination, breed WHERE breed.id = pet.breed_id and vaccination.pet_id = pet.id and vaccination.status='PENDING' GROUP BY pet.id;
-        stmt = text(
-            "SELECT pet.id, pet.name, pet.birth_date, breed.type FROM pet JOIN breed ON breed.id = pet.breed_id JOIN vaccination ON vaccination.pet_id = pet.id WHERE vaccination.status='PENDING' GROUP BY pet.id"
-        )
-        return self.session.exec(stmt).all()
-
-    def get_all_pets_with_breed(self) -> List[Tuple]:
-        # Original: SELECT pet.id, pet.name, pet.birth_date, breed.type FROM pet, breed WHERE breed.id = pet.breed_id;
-        stmt = select(Pet.id, Pet.name, Pet.birth_date, Breed.type).join(
-            Breed, Breed.id == Pet.breed_id
-        )
-        # However, Pet.breed_id is int, Breed.id is int. join matches foreign key.
-        # But previous code used Implicit Join (comma separated). Explicit JOIN is better.
-        return self.session.exec(stmt).all()
+    def get_all(self) -> Sequence[Pet]:
+        return self.session.exec(select(Pet)).all()
