@@ -13,7 +13,7 @@
 #  limitations under the License
 
 from typing import Sequence
-from sqlmodel import Session, select, text
+from sqlmodel import Session, select
 
 from vetlog_calendar.pets.model import Pet
 
