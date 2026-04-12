@@ -17,7 +17,6 @@ from .users.repository import UserRepository
 from .users.service import UserService
 from .pets.repository import PetRepository
 from .pets.service import PetService
-from .vaccinations.service import VaccinationService
 from .calendar_reader import Reader
 from .shared.config import Settings
 from . import __project__, __version__
@@ -52,9 +51,8 @@ def list_pets():
     """List all pets"""
     with get_session() as session:
         repo = PetRepository(session)
-        vaccination_service = VaccinationService()
-        service = PetService(repo, vaccination_service)
-        pets = service.process_vaccinations()
+        service = PetService(repo)
+        pets = service.get_all()
         for pet in pets:
             print(
                 f"pet: {pet.name}, type: {pet.type}, birth date: {pet.birth_date}, owner: {pet.owner}"
