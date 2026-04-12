@@ -19,7 +19,7 @@ from sqlmodel import Field, SQLModel
 
 
 class User(SQLModel, table=True):
-    id: int = Field(default=None, primary_key=True)
+    id: int | None = Field(default=None, primary_key=True)
     username: str = Field(index=True, unique=True, nullable=False)
     # password and role with default values so tests don't require them when
     # testing unrelated features

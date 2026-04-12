@@ -38,7 +38,11 @@ def list_users():
     with get_session() as session:
         repo = UserRepository(session)
         service = UserService(repo)
-        service.get_all()
+        users = service.get_all()
+        for user in users:
+            print(
+                f"user: {user.username}, email: {user.email}, mobile: {user.mobile}, role: {user.role}"
+            )
 
 
 def version_check():

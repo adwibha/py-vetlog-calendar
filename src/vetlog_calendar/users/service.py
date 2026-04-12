@@ -24,9 +24,4 @@ class UserService:
 
     def get_all(self) -> Sequence[User]:
         """Return all users"""
-        users = self.repo.get_all()
-        for user in users:
-            print(
-                f"user: {user.username}, email: {user.email}, mobile: {user.mobile}, role: {user.role}"
-            )
-        return users
+        return self.repo.get_all()
