@@ -12,6 +12,9 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from .shared.database import get_session
+from .users.repository import UserRepository
+from .users.service import UserService
 from .calendar_reader import Reader
 from .shared.config import Settings
 from . import __project__, __version__
@@ -28,6 +31,18 @@ def print_paths():
     settings = Settings()
     print(f"Token path: {settings.TOKEN_PATH}")
     print(f"Credentials path: {settings.CREDENTIALS_PATH}")
+
+
+def list_users():
+    """List all users"""
+    with get_session() as session:
+        repo = UserRepository(session)
+        service = UserService(repo)
+        users = service.get_all()
+        for user in users:
+            print(
+                f"user: {user.username}, email: {user.email}, mobile: {user.mobile}, role: {user.role}"
+            )
 
 
 def version_check():

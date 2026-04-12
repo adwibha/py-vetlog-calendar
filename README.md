@@ -38,6 +38,9 @@ uv run events
 
 # List user's token paths
 uv run paths
+
+# List all users
+uv run users
 ```
 
 **Test**

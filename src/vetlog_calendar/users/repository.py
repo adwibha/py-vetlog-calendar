@@ -12,24 +12,19 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from urllib.parse import quote_plus
-from functools import lru_cache
+from collections.abc import Sequence
 
-from sqlmodel import Session, create_engine
+from sqlmodel import Session, select
 
-from vetlog_calendar.shared.config import get_settings
-
-
-@lru_cache
-def get_database_url() -> str:
-    settings = get_settings()
-    return f"mysql+mysqlconnector://{quote_plus(settings.db_user)}:{quote_plus(settings.db_password)}@{settings.db_host}/{settings.db_name}"
+from vetlog_calendar.users.model import User
 
 
-@lru_cache
-def get_engine():
-    return create_engine(get_database_url(), echo=False, pool_pre_ping=True)
+class UserRepository:
+    def __init__(self, session: Session) -> None:
+        self.session = session
 
+    def get(self, username: str) -> User | None:
+        return self.session.exec(select(User).where(User.username == username)).first()
 
-def get_session() -> Session:
-    return Session(get_engine())
+    def get_all(self) -> Sequence[User]:
+        return self.session.exec(select(User)).all()

@@ -12,24 +12,29 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from urllib.parse import quote_plus
-from functools import lru_cache
+import pytest
 
-from sqlmodel import Session, create_engine
+from unittest.mock import MagicMock
 
-from vetlog_calendar.shared.config import get_settings
-
-
-@lru_cache
-def get_database_url() -> str:
-    settings = get_settings()
-    return f"mysql+mysqlconnector://{quote_plus(settings.db_user)}:{quote_plus(settings.db_password)}@{settings.db_host}/{settings.db_name}"
+from vetlog_calendar.users.model import User
+from vetlog_calendar.users.service import UserService
 
 
-@lru_cache
-def get_engine():
-    return create_engine(get_database_url(), echo=False, pool_pre_ping=True)
+@pytest.fixture
+def mock_repo():
+    return MagicMock()
 
 
-def get_session() -> Session:
-    return Session(get_engine())
+def test_get_users(mock_repo):
+    """Get all users"""
+    service = UserService(repo=mock_repo)
+    users = [
+        User(
+            username="josdem",
+            email="contact@josdem.io",
+            mobile="1234567890",
+            role="user",
+        )
+    ]
+    mock_repo.get_all.return_value = users
+    assert service.get_all() == users
