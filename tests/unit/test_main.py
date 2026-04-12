@@ -18,7 +18,7 @@ from vetlog_calendar import main
 from vetlog_calendar.users.model import User
 
 
-def test_list_users(capsys):
+def test_list_users_prints_user_details(capsys):
     """List all users prints expected user details"""
     user = User(
         username="josdem",
