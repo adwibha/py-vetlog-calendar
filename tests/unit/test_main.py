@@ -12,10 +12,33 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from unittest.mock import MagicMock, patch
+
 from vetlog_calendar import main
+from vetlog_calendar.users.model import User
 
 
-def test_main():
-    """List all users"""
-    main.list_users()  # This will print the users, but we won't assert anything here
-    assert True
+def test_list_users(capsys):
+    """List all users prints expected user details"""
+    user = User(
+        username="josdem",
+        email="contact@josdem.io",
+        mobile="1234567890",
+        role="USER",
+    )
+
+    mock_session_cm = MagicMock()
+    mock_session_cm.__enter__ = MagicMock(return_value=MagicMock())
+    mock_session_cm.__exit__ = MagicMock(return_value=False)
+
+    with (
+        patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
+        patch("vetlog_calendar.main.UserService.get_all", return_value=[user]),
+    ):
+        main.list_users()
+
+    captured = capsys.readouterr()
+    assert "user: josdem" in captured.out
+    assert "email: contact@josdem.io" in captured.out
+    assert "mobile: 1234567890" in captured.out
+    assert "role: USER" in captured.out
