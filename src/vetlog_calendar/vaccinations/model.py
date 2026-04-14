@@ -35,4 +35,3 @@ class Vaccination(SQLModel, table=True):
     name: str
     date: datetime
     status: str = "PENDING"
-    date_created: datetime = Field(default_factory=datetime.now)

@@ -57,7 +57,7 @@ def list_pets():
         pets = service.get_all()
         for pet in pets:
             print(
-                f"pet: {pet.name}, type: {pet.type}, birth date: {pet.birth_date}, owner: {pet.owner}"
+                f"pet: {pet.name}, birth date: {pet.birth_date}, going_out_often: {pet.going_out_often}"
             )
 
 

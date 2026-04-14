@@ -38,7 +38,5 @@ class Pet(SQLModel, table=True):
     user_id: Optional[int] = Field(
         default=None
     )  # Assuming user_id exists based on typical schema, though not in query
-    image: Optional[str] = Field(default=None)
-
     # Relationships (Optional for now, but good practice)
     # breed: Optional[Breed] = Relationship()
