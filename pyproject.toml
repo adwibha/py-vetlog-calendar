@@ -28,6 +28,7 @@ events = "vetlog_calendar.main:list_events"
 paths = "vetlog_calendar.main:print_paths"
 users = "vetlog_calendar.main:list_users"
 pets = "vetlog_calendar.main:list_pets"
+vaccinations = "vetlog_calendar.main:list_vaccinations"
 
 [build-system]
 requires = ["setuptools>=68", "wheel"]

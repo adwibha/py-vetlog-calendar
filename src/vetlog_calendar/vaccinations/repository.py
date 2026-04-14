@@ -12,7 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License
 
-from sqlmodel import Sequence, Sequence, Session
+from sqlmodel import Sequence, Session
 
 from vetlog_calendar.vaccinations.model import Vaccination
 

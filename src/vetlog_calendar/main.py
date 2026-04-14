@@ -12,8 +12,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from vetlog_calendar import pets
-
 from .shared.database import get_session
 from .users.repository import UserRepository
 from .users.service import UserService
