@@ -13,6 +13,7 @@
 #  limitations under the License
 
 from sqlmodel import Sequence, Session
+from sqlmodel import select
 
 from vetlog_calendar.vaccinations.model import Vaccination
 
@@ -22,4 +23,4 @@ class VaccinationRepository:
         self.session = session
 
     def get_all(self) -> Sequence[Vaccination]:
-        return self.session.exec(Vaccination).all()
+        return self.session.exec(select(Vaccination)).all()
