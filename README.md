@@ -41,6 +41,12 @@ uv run paths
 
 # List all users
 uv run users
+
+# List all pets
+uv run pets
+
+# List all vaccinations
+uv run vaccinations
 ```
 
 **Test**

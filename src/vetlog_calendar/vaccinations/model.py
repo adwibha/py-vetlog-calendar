@@ -13,30 +13,25 @@
 #  limitations under the License
 
 from datetime import datetime
+from enum import StrEnum
 from typing import Optional
-from decimal import Decimal
 from sqlmodel import Field, SQLModel
 
 
-class Breed(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    slug: str
-    type: str
-    date_created: datetime = Field(default_factory=datetime.now)
+class VaccineType(StrEnum):
+    C6CV = "C6CV"
+    DEWORMING = "Deworming"
+    RABIES = "Rabies"
+    PUPPY = "PUPPY"
+    C4CV = "C4CV"
+    TRICAT = "TRICAT"
+    TRICAT_BOOST = "TRICAT_BOOST"
+    FELV = "FeLV"
 
 
-class Pet(SQLModel, table=True):
+class Vaccination(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+    pet_id: int = Field(index=True)
     name: str
-    birth_date: datetime
-    breed_id: int = Field(foreign_key="breed.id")
-    status: str
-    uuid: str
-    weight: Optional[Decimal] = Field(default=None)
-    going_out_often: Optional[bool] = Field(default=None)
-    date_created: datetime = Field(default_factory=datetime.now)
-    user_id: Optional[int] = Field(
-        default=None
-    )  # Assuming user_id exists based on typical schema, though not in query
-    # Relationships (Optional for now, but good practice)
-    # breed: Optional[Breed] = Relationship()
+    date: datetime
+    status: str = "PENDING"
