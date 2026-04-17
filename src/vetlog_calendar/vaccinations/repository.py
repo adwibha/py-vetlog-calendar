@@ -23,5 +23,5 @@ class VaccinationRepository:
         self.session = session
 
     def find_pending_vaccinations(self) -> Sequence[Vaccination]:
-        stmt = select(Vaccination).where(Vaccination.status == "PENDING")
+        stmt = select(Vaccination).where(Vaccination.status == "NEW")
         return self.session.exec(stmt).all()
