@@ -66,7 +66,7 @@ def list_vaccinations():
     with get_session() as session:
         repo = VaccinationRepository(session)
         service = VaccinationService(repo)
-        vaccinations = service.get_all()
+        vaccinations = service.get_pending_vaccinations()
         for vaccination in vaccinations:
             print(
                 f"vaccination: {vaccination.name}, date: {vaccination.date}, status: {vaccination.status}, pet_id: {vaccination.pet_id}"
