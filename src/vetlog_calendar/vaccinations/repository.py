@@ -12,10 +12,10 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License
 
-from sqlmodel import Sequence, Session
+from typing import Sequence
+from sqlmodel import Session, select
 
 from vetlog_calendar.vaccinations.model import Vaccination
-from sqlmodel import text
 
 
 class VaccinationRepository:
@@ -23,8 +23,5 @@ class VaccinationRepository:
         self.session = session
 
     def find_pending_vaccinations(self) -> Sequence[Vaccination]:
-        # Getting all vaccination rows with status NEW:
-        stmt = text(
-            "SELECT id, date, name, status, pet_id FROM vaccination where status='NEW'"
-        )
+        stmt = select(Vaccination).where(Vaccination.status == "PENDING")
         return self.session.exec(stmt).all()
