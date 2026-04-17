@@ -34,4 +34,4 @@ class Vaccination(SQLModel, table=True):
     pet_id: int = Field(index=True)
     name: str
     date: datetime
-    status: str = "PENDING"
+    status: str = "NEW"

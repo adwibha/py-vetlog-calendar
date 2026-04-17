@@ -20,5 +20,5 @@ class VaccinationService:
         self.repository = repository
 
     def get_pending_vaccinations(self):
-        """Return all pets"""
+        """Return pending vaccinations"""
         return self.repository.find_pending_vaccinations()

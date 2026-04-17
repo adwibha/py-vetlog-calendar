@@ -62,7 +62,7 @@ def list_pets():
 
 
 def list_vaccinations():
-    """List all vaccinations"""
+    """List pending vaccinations"""
     with get_session() as session:
         repo = VaccinationRepository(session)
         service = VaccinationService(repo)
