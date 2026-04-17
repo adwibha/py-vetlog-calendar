@@ -13,14 +13,18 @@
 #  limitations under the License
 
 from sqlmodel import Sequence, Session
-from sqlmodel import select
 
 from vetlog_calendar.vaccinations.model import Vaccination
+from sqlmodel import text
 
 
 class VaccinationRepository:
     def __init__(self, session: Session):
         self.session = session
 
-    def get_all(self) -> Sequence[Vaccination]:
-        return self.session.exec(select(Vaccination)).all()
+    def find_pending_vaccinations(self) -> Sequence[Vaccination]:
+        # Getting all vaccination rows with status NEW:
+        stmt = text(
+            "SELECT id, date, name, status, pet_id FROM vaccination where status='NEW'"
+        )
+        return self.session.exec(stmt).all()
