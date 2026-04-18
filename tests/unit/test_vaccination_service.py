@@ -26,8 +26,10 @@ def mock_repo():
 
 
 def test_get_vaccinations(mock_repo):
-    """Get all vaccinations"""
+    """Get pending vaccinations"""
     service = VaccinationService(repository=mock_repo)
-    vaccinations = [Vaccination(id=1, name="Rabies")]
-    mock_repo.get_all.return_value = vaccinations
-    assert service.get_all() == vaccinations
+    vaccinations = [
+        Vaccination(id=1, name="Rabies", date="2026-04-21", pet_id=2, status="NEW")
+    ]
+    mock_repo.find_pending_vaccinations.return_value = vaccinations
+    assert service.get_pending_vaccinations() == vaccinations

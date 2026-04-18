@@ -12,8 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License
 
-from sqlmodel import Sequence, Session
-from sqlmodel import select
+from typing import Sequence
+from sqlmodel import Session, select
 
 from vetlog_calendar.vaccinations.model import Vaccination
 
@@ -22,5 +22,6 @@ class VaccinationRepository:
     def __init__(self, session: Session):
         self.session = session
 
-    def get_all(self) -> Sequence[Vaccination]:
-        return self.session.exec(select(Vaccination)).all()
+    def find_pending_vaccinations(self) -> Sequence[Vaccination]:
+        stmt = select(Vaccination).where(Vaccination.status == "NEW")
+        return self.session.exec(stmt).all()

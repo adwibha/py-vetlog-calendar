@@ -19,6 +19,6 @@ class VaccinationService:
     def __init__(self, repository: VaccinationRepository):
         self.repository = repository
 
-    def get_all(self):
-        """Return all pets"""
-        return self.repository.get_all()
+    def get_pending_vaccinations(self):
+        """Return pending vaccinations"""
+        return self.repository.find_pending_vaccinations()
