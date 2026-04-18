@@ -31,3 +31,11 @@ def test_get_pets(mock_repo):
     pets = [Pet(id=1, name="Sora")]
     mock_repo.get_all.return_value = pets
     assert service.get_all() == pets
+
+
+def test_get_pet_by_id(mock_repo):
+    """Get pet by id"""
+    service = PetService(repository=mock_repo)
+    pet = Pet(id=1, name="Sora")
+    mock_repo.find_by_id.return_value = pet
+    assert service.get_by_id() == pet

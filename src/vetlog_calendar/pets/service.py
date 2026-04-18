@@ -12,6 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License
 
+from vetlog_calendar.pets.model import Pet
 from vetlog_calendar.pets.repository import PetRepository
 
 
@@ -22,3 +23,7 @@ class PetService:
     def get_all(self):
         """Return all pets"""
         return self.repository.get_all()
+
+    def get_by_id(self, id: int) -> Pet:
+        """Return pet by id"""
+        return self.repository.find_by_id(id)
