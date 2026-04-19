@@ -26,4 +26,4 @@ class PetRepository:
         return self.session.exec(select(Pet)).all()
 
     def find_by_id(self, id: int) -> Pet:
-        return self.session.exec(select(Pet)).one(id)
+        return self.session.exec(select(Pet).where(Pet.id == id)).one()

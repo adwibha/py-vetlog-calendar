@@ -28,3 +28,6 @@ class UserRepository:
 
     def get_all(self) -> Sequence[User]:
         return self.session.exec(select(User)).all()
+
+    def find_by_id(self, id: int) -> User:
+        return self.session.exec(select(User).where(User.id == id)).one()
