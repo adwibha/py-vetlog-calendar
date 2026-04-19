@@ -38,4 +38,4 @@ def test_get_pet_by_id(mock_repo):
     service = PetService(repository=mock_repo)
     pet = Pet(id=1, name="Sora")
     mock_repo.find_by_id.return_value = pet
-    assert service.get_by_id() == pet
+    assert service.get_by_id(1) == pet
