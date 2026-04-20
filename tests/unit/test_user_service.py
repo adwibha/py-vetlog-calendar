@@ -51,4 +51,6 @@ def test_get_by_id(mock_repo):
         role="user",
     )
     mock_repo.find_by_id.return_value = user
-    assert service.get_by_id(1) == user
+    result = service.get_by_id(1)
+    assert result == user
+    mock_repo.find_by_id.assert_called_once_with(1)
