@@ -67,11 +67,13 @@ def list_vaccinations():
         repo = VaccinationRepository(session)
         service = VaccinationService(repo)
         petRepository = PetRepository(session)
+        userRepository = UserRepository(session)
         vaccinations = service.get_pending_vaccinations()
         for vaccination in vaccinations:
             pet = petRepository.find_by_id(vaccination.pet_id)
+            user = userRepository.find_by_id(pet.user_id)
             print(
-                f"vaccination: {vaccination.name}, date: {vaccination.date}, status: {vaccination.status}, pet: {pet.name}"
+                f"vaccination: {vaccination.name}, date: {vaccination.date}, pet: {pet.name}, notify to: {user.email}"
             )
 
 
