@@ -24,6 +24,6 @@ class PetService:
         """Return all pets"""
         return self.repository.get_all()
 
-    def get_by_id(self, id: int) -> Pet:
+    def get_by_id(self, id: int) -> Pet | None:
         """Return pet by id"""
         return self.repository.find_by_id(id)
