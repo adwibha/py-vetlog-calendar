@@ -21,7 +21,7 @@ from vetlog_calendar.users.model import User
 
 @pytest.fixture
 def pet():
-    return Pet(id=1, name="Sora", owner_id=7)
+    return Pet(id=1, name="Sora", user_id=7)
 
 
 @pytest.fixture
