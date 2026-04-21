@@ -31,8 +31,6 @@ def test_list_users_prints_user_details(capsys):
     )
 
     mock_session_cm = MagicMock()
-    mock_session_cm.__enter__ = MagicMock(return_value=MagicMock())
-    mock_session_cm.__exit__ = MagicMock(return_value=False)
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
@@ -56,8 +54,6 @@ def test_list_vaccinations_handles_missing_pet(capsys):
     )
 
     mock_session_cm = MagicMock()
-    mock_session_cm.__enter__ = MagicMock(return_value=MagicMock())
-    mock_session_cm.__exit__ = MagicMock(return_value=False)
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
