@@ -25,8 +25,6 @@ def test_list_users_prints_user_details(capsys):
     """List all users prints expected user details"""
     user = User(
         username="josdem",
-        first_name="Jose",
-        last_name="Morales",
         email="contact@josdem.io",
         mobile="1234567890",
         role="USER",
