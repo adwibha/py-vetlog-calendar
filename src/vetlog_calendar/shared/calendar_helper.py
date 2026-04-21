@@ -17,11 +17,12 @@ from vetlog_calendar.users.model import User
 
 
 class Helper:
-    def __init__(self, pet: Pet, owner: User):
+    def __init__(self, pet: Pet, owner: User | None):
         self.pet = pet
         self.owner = owner
 
     def get_event_title(self) -> str:
-        if not self.owner:
+        if self.owner is None:
             return f"Vaccination appointment for {self.pet.name}"
-        return f"{self.owner.first_name} - Vaccination appointment for {self.pet.name}"
+        owner_name = self.owner.first_name or self.owner.username
+        return f"{owner_name} - Vaccination appointment for {self.pet.name}"

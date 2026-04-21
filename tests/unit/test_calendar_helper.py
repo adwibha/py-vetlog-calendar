@@ -21,12 +21,12 @@ from vetlog_calendar.users.model import User
 
 @pytest.fixture
 def pet():
-    return Pet(id=1, name="Sora", owner_id=7)
+    return Pet(id=1, name="Sora", user_id=7)
 
 
 @pytest.fixture
 def owner():
-    return User(id=7, first_name="josdem")
+    return User(id=7, username="josdem", first_name="josdem")
 
 
 def test_get_event_title(pet, owner):
