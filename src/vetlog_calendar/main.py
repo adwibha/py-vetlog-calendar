@@ -72,11 +72,6 @@ def list_vaccinations():
         vaccinations = service.get_pending_vaccinations()
         for vaccination in vaccinations:
             pet = pet_repository.find_by_id(vaccination.pet_id)
-            if pet is None:
-                print(
-                    f"vaccination: {vaccination.name}, date: {vaccination.date}, pet: unknown, notify to: unknown"
-                )
-                continue
 
             user = (
                 user_repository.find_by_id(pet.user_id)
