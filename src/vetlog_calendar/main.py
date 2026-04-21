@@ -78,7 +78,11 @@ def list_vaccinations():
                 )
                 continue
 
-            user = user_repository.find_by_id(pet.user_id) if pet.user_id else None
+            user = (
+                user_repository.find_by_id(pet.user_id)
+                if pet.user_id is not None
+                else None
+            )
             helper = Helper(pet=pet, owner=user)
             event_title = helper.get_event_title()
             print(f"Google calendar event title: {event_title}")
