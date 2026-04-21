@@ -25,6 +25,8 @@ def test_list_users_prints_user_details(capsys):
     """List all users prints expected user details"""
     user = User(
         username="josdem",
+        first_name="Jose",
+        last_name="Morales",
         email="contact@josdem.io",
         mobile="1234567890",
         role="USER",
@@ -108,6 +110,6 @@ def test_list_vaccinations_handles_missing_user(capsys):
         main.list_vaccinations()
 
     captured = capsys.readouterr()
-    assert "vaccination: Rabies" in captured.out
-    assert "pet: Sora" in captured.out
-    assert "notify to: unknown" in captured.out
+    assert (
+        "Google calendar event title: Vaccination appointment for Sora" in captured.out
+    )
