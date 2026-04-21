@@ -24,3 +24,6 @@ class PetRepository:
 
     def get_all(self) -> Sequence[Pet]:
         return self.session.exec(select(Pet)).all()
+
+    def find_by_id(self, id: int) -> Pet | None:
+        return self.session.exec(select(Pet).where(Pet.id == id)).one_or_none()

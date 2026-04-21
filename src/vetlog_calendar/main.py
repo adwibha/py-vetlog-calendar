@@ -66,10 +66,21 @@ def list_vaccinations():
     with get_session() as session:
         repo = VaccinationRepository(session)
         service = VaccinationService(repo)
+        pet_repository = PetRepository(session)
+        user_repository = UserRepository(session)
         vaccinations = service.get_pending_vaccinations()
         for vaccination in vaccinations:
+            pet = pet_repository.find_by_id(vaccination.pet_id)
+            if pet is None:
+                print(
+                    f"vaccination: {vaccination.name}, date: {vaccination.date}, pet: unknown, notify to: unknown"
+                )
+                continue
+
+            user = user_repository.find_by_id(pet.user_id) if pet.user_id else None
+            user_email = user.email if user and user.email else "unknown"
             print(
-                f"vaccination: {vaccination.name}, date: {vaccination.date}, status: {vaccination.status}, pet_id: {vaccination.pet_id}"
+                f"vaccination: {vaccination.name}, date: {vaccination.date}, pet: {pet.name}, notify to: {user_email}"
             )
 
 

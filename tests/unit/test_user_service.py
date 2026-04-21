@@ -38,3 +38,19 @@ def test_get_users(mock_repo):
     ]
     mock_repo.get_all.return_value = users
     assert service.get_all() == users
+
+
+def test_get_by_id(mock_repo):
+    """Get user by id"""
+    service = UserService(repo=mock_repo)
+    user = User(
+        id=1,
+        username="josdem",
+        email="contact@josdem.io",
+        mobile="1234567890",
+        role="user",
+    )
+    mock_repo.find_by_id.return_value = user
+    result = service.get_by_id(1)
+    assert result == user
+    mock_repo.find_by_id.assert_called_once_with(1)
