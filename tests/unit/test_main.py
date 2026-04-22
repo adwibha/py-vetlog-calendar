@@ -46,6 +46,7 @@ def pet():
     return Pet(
         id=1,
         user_id=1,
+        adopter_id=None,
         name="Sora",
         birth_date=datetime(2020, 1, 1, 0, 0, 0),
         breed_id=1,
@@ -92,12 +93,46 @@ def test_list_vaccinations(capsys):
     )
 
 
+def test_list_vaccinations_handles_pet_has_owner(capsys):
+    """List pending vaccinations"""
+
+    mock_session_cm = MagicMock()
+
+    with (
+        patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
+        patch(
+            "vetlog_calendar.main.VaccinationService.get_pending_vaccinations",
+            return_value=[vaccination()],
+        ),
+        patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet()),
+        patch("vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()),
+    ):
+        main.list_vaccinations()
+
+    captured = capsys.readouterr()
+    assert (
+        "Google calendar event title: Jose - Vaccination appointment for Sora"
+        in captured.out
+    )
+
+
 def test_list_vaccinations_handles_pet_has_adopter(capsys):
     """List pending vaccinations"""
+
+    adopter = User(
+        id=2,
+        username="sofiaD",
+        first_name="Sofia",
+        last_name="Morales",
+        email="sofia@vetlog.org",
+        mobile="0987654321",
+        role="USER",
+    )
+
     pet = Pet(
         id=1,
-        user_id=999,
-        adopter_id=1,
+        user_id=1,
+        adopter_id=2,
         name="Sora",
         birth_date=datetime(2020, 1, 1, 0, 0, 0),
         breed_id=1,
@@ -115,7 +150,7 @@ def test_list_vaccinations_handles_pet_has_adopter(capsys):
         ),
         patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet),
         patch(
-            "vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()
+            "vetlog_calendar.main.UserRepository.find_by_id", return_value=adopter
         ) as mock_find_user_by_id,
     ):
         main.list_vaccinations()
@@ -123,6 +158,6 @@ def test_list_vaccinations_handles_pet_has_adopter(capsys):
     mock_find_user_by_id.assert_called_with(pet.adopter_id)
     captured = capsys.readouterr()
     assert (
-        "Google calendar event title: Jose - Vaccination appointment for Sora"
+        "Google calendar event title: Sofia - Vaccination appointment for Sora"
         in captured.out
     )
