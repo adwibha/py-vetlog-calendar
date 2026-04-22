@@ -12,6 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from .shared.calendar_helper import Helper
 from .shared.database import get_session
 from .users.repository import UserRepository
 from .users.service import UserService
@@ -71,17 +72,15 @@ def list_vaccinations():
         vaccinations = service.get_pending_vaccinations()
         for vaccination in vaccinations:
             pet = pet_repository.find_by_id(vaccination.pet_id)
-            if pet is None:
-                print(
-                    f"vaccination: {vaccination.name}, date: {vaccination.date}, pet: unknown, notify to: unknown"
-                )
-                continue
 
-            user = user_repository.find_by_id(pet.user_id) if pet.user_id else None
-            user_email = user.email if user and user.email else "unknown"
-            print(
-                f"vaccination: {vaccination.name}, date: {vaccination.date}, pet: {pet.name}, notify to: {user_email}"
+            user = (
+                user_repository.find_by_id(pet.user_id)
+                if pet.user_id is not None
+                else None
             )
+            helper = Helper(pet=pet, owner=user)
+            event_title = helper.get_event_title()
+            print(f"Google calendar event title: {event_title}")
 
 
 def version_check():
