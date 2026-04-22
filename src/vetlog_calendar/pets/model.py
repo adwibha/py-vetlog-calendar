@@ -35,6 +35,7 @@ class Pet(SQLModel, table=True):
     weight: Optional[Decimal] = Field(default=None)
     going_out_often: Optional[bool] = Field(default=None)
     date_created: datetime = Field(default_factory=datetime.now)
+    adopter_id: Optional[int] = Field(default=None)
     user_id: Optional[int] = Field(
         default=None
     )  # Assuming user_id exists based on typical schema, though not in query
