@@ -34,6 +34,24 @@ def owner():
     )
 
 
+def vaccination():
+    return Vaccination(
+        pet_id=1,
+        name="Rabies",
+        date=datetime(2026, 1, 1, 0, 0, 0),
+    )
+
+
+def pet():
+    return Pet(
+        id=1,
+        user_id=1,
+        name="Sora",
+        birth_date=datetime(2020, 1, 1, 0, 0, 0),
+        breed_id=1,
+    )
+
+
 def test_list_users_prints_user_details(capsys):
     """List all users prints expected user details"""
 
@@ -54,29 +72,15 @@ def test_list_users_prints_user_details(capsys):
 
 def test_list_vaccinations(capsys):
     """List pending vaccinations"""
-    vaccination = Vaccination(
-        pet_id=1,
-        name="Rabies",
-        date=datetime(2026, 1, 1, 0, 0, 0),
-    )
-
-    pet = Pet(
-        id=1,
-        user_id=1,
-        name="Sora",
-        birth_date=datetime(2020, 1, 1, 0, 0, 0),
-        breed_id=1,
-    )
-
     mock_session_cm = MagicMock()
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
         patch(
             "vetlog_calendar.main.VaccinationService.get_pending_vaccinations",
-            return_value=[vaccination],
+            return_value=[vaccination()],
         ),
-        patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet),
+        patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet()),
         patch("vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()),
     ):
         main.list_vaccinations()
@@ -90,11 +94,6 @@ def test_list_vaccinations(capsys):
 
 def test_list_vaccinations_handles_pet_has_adopter(capsys):
     """List pending vaccinations"""
-    vaccination = Vaccination(
-        pet_id=1,
-        name="Rabies",
-        date=datetime(2026, 1, 1, 0, 0, 0),
-    )
     pet = Pet(
         id=1,
         user_id=999,
@@ -112,7 +111,7 @@ def test_list_vaccinations_handles_pet_has_adopter(capsys):
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
         patch(
             "vetlog_calendar.main.VaccinationService.get_pending_vaccinations",
-            return_value=[vaccination],
+            return_value=[vaccination()],
         ),
         patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet),
         patch(
