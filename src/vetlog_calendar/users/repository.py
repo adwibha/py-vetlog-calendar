@@ -23,11 +23,8 @@ class UserRepository:
     def __init__(self, session: Session) -> None:
         self.session = session
 
-    def get(self, username: str) -> User | None:
-        return self.session.exec(select(User).where(User.username == username)).first()
-
     def get_all(self) -> Sequence[User]:
         return self.session.exec(select(User)).all()
 
-    def find_by_id(self, id: int) -> User | None:
-        return self.session.exec(select(User).where(User.id == id)).one_or_none()
+    def find_by_id(self, id: int) -> User:
+        return self.session.exec(select(User).where(User.id == id)).one()

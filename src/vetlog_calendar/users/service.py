@@ -26,6 +26,6 @@ class UserService:
         """Return all users"""
         return self.repo.get_all()
 
-    def get_by_id(self, id: int) -> User | None:
-        """Return user by id"""
+    def get_by_id(self, id: int) -> User:
+        """Return owner by id"""
         return self.repo.find_by_id(id)
