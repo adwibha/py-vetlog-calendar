@@ -27,10 +27,10 @@ class User(SQLModel, table=True):
     role: str = "USER"
 
     # personal with default (None) values
-    first_name: str | None = Field(default=None)
-    last_name: str | None = Field(default=None)
-    email: str | None = Field(default=None)
-    mobile: str | None = Field(default=None)
+    first_name: str = Field(default=None)
+    last_name: str = Field(default=None)
+    email: str = Field(default=None)
+    mobile: str = Field(default=None)
 
     # timestamps with default values
     date_created: datetime = Field(default_factory=lambda: datetime.now(UTC))
