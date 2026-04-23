@@ -43,11 +43,13 @@ def test_get_event_title(pet, owner):
 
 def test_get_event_description(pet, owner):
     helper = Helper(pet=pet, owner=owner)
-    expected_description = """Jose Morales
-1234567890
-
-Vaccination appointment for Sora
-
-Thank you for trusting Vetlog!
-https://vetlog.org/"""
+    expected_description = (
+        "Jose Morales\n"
+        "1234567890\n"
+        "\n"
+        "Vaccination appointment for Sora\n"
+        "\n"
+        "Thank you for trusting Vetlog!\n"
+        "https://vetlog.org/"
+    )
     assert helper.get_event_description() == expected_description
