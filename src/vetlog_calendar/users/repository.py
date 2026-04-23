@@ -23,9 +23,6 @@ class UserRepository:
     def __init__(self, session: Session) -> None:
         self.session = session
 
-    def get(self, username: str) -> User | None:
-        return self.session.exec(select(User).where(User.username == username)).first()
-
     def get_all(self) -> Sequence[User]:
         return self.session.exec(select(User)).all()
 
