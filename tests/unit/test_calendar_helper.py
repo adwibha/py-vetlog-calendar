@@ -17,6 +17,7 @@ import pytest
 from vetlog_calendar.pets.model import Pet
 from vetlog_calendar.shared.calendar_helper import Helper
 from vetlog_calendar.users.model import User
+from vetlog_calendar.vaccinations.model import Vaccination
 
 
 @pytest.fixture
@@ -35,14 +36,19 @@ def owner():
     )
 
 
-def test_get_event_title(pet, owner):
-    helper = Helper(pet=pet, owner=owner)
+@pytest.fixture
+def vaccination():
+    return Vaccination(id=1, pet_id=1, name="C6CV", date="2026-04-21", status="NEW")
+
+
+def test_get_event_title(pet, vaccination, owner):
+    helper = Helper(pet=pet, vaccination=vaccination, owner=owner)
     expected_title = "Jose - Vaccination appointment for Sora"
     assert helper.get_event_title() == expected_title
 
 
-def test_get_event_description(pet, owner):
-    helper = Helper(pet=pet, owner=owner)
+def test_get_event_description(pet, vaccination, owner):
+    helper = Helper(pet=pet, vaccination=vaccination, owner=owner)
     expected_description = (
         "Jose Morales\n"
         "1234567890\n"
