@@ -14,11 +14,13 @@
 
 from vetlog_calendar.pets.model import Pet
 from vetlog_calendar.users.model import User
+from vetlog_calendar.vaccinations.model import Vaccination
 
 
 class Helper:
-    def __init__(self, pet: Pet, owner: User | None):
+    def __init__(self, pet: Pet, vaccination: Vaccination, owner: User):
         self.pet = pet
+        self.vaccination = vaccination
         self.owner = owner
 
     def get_event_title(self) -> str:
@@ -37,12 +39,12 @@ class Helper:
             "location": "Online",
             "description": f"{owner_info}\n{pet_info}\n{thank_you_info}\n{website_info}",
             "start": {
-                "dateTime": "2026-05-01T10:00:00Z",  # Use ISO 8601 format
-                "timeZone": "UTC",
+                "dateTime": f"{self.vaccination.date}T11:00:00Z",  # Use ISO 8601 format
+                "timeZone": "CST",
             },
             "end": {
-                "dateTime": "2026-05-01T11:00:00Z",
-                "timeZone": "UTC",
+                "dateTime": f"{self.vaccination.date}T11:15:00Z",
+                "timeZone": "CST",
             },
             "attendees": [
                 {"email": self.owner.email},
