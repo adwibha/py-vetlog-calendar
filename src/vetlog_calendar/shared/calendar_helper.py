@@ -32,4 +32,21 @@ class Helper:
         pet_info = f"Vaccination appointment for {self.pet.name}\n"
         thank_you_info = "Thank you for trusting Vetlog!"
         website_info = "https://vetlog.org/"
+        event = {
+            "summary": self.get_event_title(),
+            "location": "Online",
+            "description": f"{owner_info}\n{pet_info}\n{thank_you_info}\n{website_info}",
+            "start": {
+                "dateTime": "2026-05-01T10:00:00Z",  # Use ISO 8601 format
+                "timeZone": "UTC",
+            },
+            "end": {
+                "dateTime": "2026-05-01T11:00:00Z",
+                "timeZone": "UTC",
+            },
+            "attendees": [
+                {"email": self.owner.email},
+            ],
+        }
+        print(event)
         return f"{owner_info}\n{pet_info}\n{thank_you_info}\n{website_info}"
