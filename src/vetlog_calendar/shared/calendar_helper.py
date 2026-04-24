@@ -22,7 +22,14 @@ class Helper:
         self.owner = owner
 
     def get_event_title(self) -> str:
-        if self.owner is None:
-            return f"Vaccination appointment for {self.pet.name}"
         owner_name = self.owner.first_name or self.owner.username
         return f"{owner_name} - Vaccination appointment for {self.pet.name}"
+
+    def get_event_description(self) -> str:
+        owner_info = (
+            f"{self.owner.first_name} {self.owner.last_name}\n{self.owner.mobile}\n"
+        )
+        pet_info = f"Vaccination appointment for {self.pet.name}\n"
+        thank_you_info = "Thank you for trusting Vetlog!"
+        website_info = "https://vetlog.org/"
+        return f"{owner_info}\n{pet_info}\n{thank_you_info}\n{website_info}"

@@ -26,10 +26,30 @@ def pet():
 
 @pytest.fixture
 def owner():
-    return User(id=7, username="josdem", first_name="josdem")
+    return User(
+        id=7,
+        username="josdem",
+        first_name="Jose",
+        last_name="Morales",
+        mobile="1234567890",
+    )
 
 
 def test_get_event_title(pet, owner):
     helper = Helper(pet=pet, owner=owner)
-    expected_title = "josdem - Vaccination appointment for Sora"
+    expected_title = "Jose - Vaccination appointment for Sora"
     assert helper.get_event_title() == expected_title
+
+
+def test_get_event_description(pet, owner):
+    helper = Helper(pet=pet, owner=owner)
+    expected_description = (
+        "Jose Morales\n"
+        "1234567890\n"
+        "\n"
+        "Vaccination appointment for Sora\n"
+        "\n"
+        "Thank you for trusting Vetlog!\n"
+        "https://vetlog.org/"
+    )
+    assert helper.get_event_description() == expected_description

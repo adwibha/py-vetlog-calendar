@@ -81,7 +81,9 @@ def list_vaccinations():
 
             helper = Helper(pet=pet, owner=user)
             event_title = helper.get_event_title()
+            event_description = helper.get_event_description()
             print(f"Google calendar event title: {event_title}")
+            print(f"Google calendar event description:\n{event_description}")
 
 
 def version_check():
