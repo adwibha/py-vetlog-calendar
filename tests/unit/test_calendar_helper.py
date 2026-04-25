@@ -33,7 +33,7 @@ def owner():
         first_name="Jose",
         last_name="Morales",
         mobile="1234567890",
-        email="contact@josdem.io",
+        email="email@josdem.io",
     )
 
 
@@ -57,9 +57,9 @@ def test_get_event_description(pet, vaccination, owner):
             "timeZone": "UTC",
         },
         "attendees": [
-            {"email": "contact@josdem.io"},
+            {"email": "email@josdem.io"},
             {"email": "dannasofia.delacruz@gmail.com"},
-            {"email": "luisgael.delacruz@gmail.com"},
+            {"email": "dafnervaldesor@gmail.com"},
             {"email": "contact@josdem.io"},
         ],
     }
