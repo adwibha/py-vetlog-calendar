@@ -50,5 +50,4 @@ class Helper:
                 {"email": self.owner.email},
             ],
         }
-        print(event)
-        return f"{owner_info}\n{pet_info}\n{thank_you_info}\n{website_info}"
+        return event
