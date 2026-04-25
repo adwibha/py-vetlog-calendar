@@ -56,15 +56,16 @@ def list_pets():
             )
 
 
-def list_vaccinations():
+def list_vaccinations(calendar: Calendar = None):
     """List pending vaccinations"""
+    if calendar is None:
+        calendar = Calendar()
     with get_session() as session:
         repo = VaccinationRepository(session)
         service = VaccinationService(repo)
         pet_repository = PetRepository(session)
         user_repository = UserRepository(session)
         vaccinations = service.get_pending_vaccinations()
-        calendar = Calendar()
         for vaccination in vaccinations:
             pet = pet_repository.find_by_id(vaccination.pet_id)
 
