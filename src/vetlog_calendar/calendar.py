@@ -13,7 +13,6 @@
 #  limitations under the License.
 
 import os.path
-import datetime
 
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
@@ -23,12 +22,12 @@ from googleapiclient.errors import HttpError
 
 from .shared.config import Settings
 
-SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
+SCOPES = ["https://www.googleapis.com/auth/calendar.events"]
 
 
-class Reader:
-    def listing_events(self):
-        print("Listing events")
+class Calendar:
+    def create_event(self, event: dict):
+        print("Creating event")
         settings = Settings()
         TOKEN_PATH = settings.TOKEN_PATH
         CREDENTIALS_PATH = settings.CREDENTIALS_PATH
@@ -49,31 +48,7 @@ class Reader:
                 token.write(creds.to_json())
         try:
             service = build("calendar", "v3", credentials=creds)
-
-            # Call the Calendar API
-            now = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
-            print("Getting the upcoming 10 events")
-            events_result = (
-                service.events()
-                .list(
-                    calendarId="primary",
-                    timeMin=now,
-                    maxResults=10,
-                    singleEvents=True,
-                    orderBy="startTime",
-                )
-                .execute()
-            )
-            events = events_result.get("items", [])
-
-            if not events:
-                print("No upcoming events found.")
-                return
-
-            # Prints the start and name of the next 10 events
-            for event in events:
-                start = event["start"].get("dateTime", event["start"].get("date"))
-                print(start, event["summary"])
+            service.events().insert(calendarId="primary", body=event).execute()
 
         except HttpError as error:
             print(f"An error occurred: {error}")

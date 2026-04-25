@@ -20,15 +20,9 @@ from .pets.repository import PetRepository
 from .pets.service import PetService
 from .vaccinations.repository import VaccinationRepository
 from .vaccinations.service import VaccinationService
-from .calendar_reader import Reader
+from .calendar import Calendar
 from .shared.config import Settings
 from . import __project__, __version__
-
-
-def list_events():
-    """List events"""
-    reader = Reader()
-    reader.listing_events()
 
 
 def print_paths():
@@ -62,8 +56,10 @@ def list_pets():
             )
 
 
-def list_vaccinations():
+def list_vaccinations(calendar: Calendar = None):
     """List pending vaccinations"""
+    if calendar is None:
+        calendar = Calendar()
     with get_session() as session:
         repo = VaccinationRepository(session)
         service = VaccinationService(repo)
@@ -79,11 +75,10 @@ def list_vaccinations():
                 else user_repository.find_by_id(pet.user_id)
             )
 
-            helper = Helper(pet=pet, owner=user)
-            event_title = helper.get_event_title()
-            event_description = helper.get_event_description()
-            print(f"Google calendar event title: {event_title}")
-            print(f"Google calendar event description:\n{event_description}")
+            helper = Helper(pet=pet, vaccination=vaccination, owner=user)
+            event = helper.get_event()
+            calendar.create_event(event)
+            print(event)
 
 
 def version_check():

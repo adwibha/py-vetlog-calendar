@@ -12,7 +12,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-
 from unittest.mock import MagicMock, patch
 from datetime import datetime
 
@@ -74,6 +73,7 @@ def test_list_users_prints_user_details(capsys):
 def test_list_vaccinations(capsys):
     """List pending vaccinations"""
     mock_session_cm = MagicMock()
+    mock_calendar = MagicMock()
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
@@ -84,19 +84,20 @@ def test_list_vaccinations(capsys):
         patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet()),
         patch("vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()),
     ):
-        main.list_vaccinations()
+        main.list_vaccinations(calendar=mock_calendar)
+
+    mock_calendar.create_event.assert_called_once()
 
     captured = capsys.readouterr()
-    assert (
-        "Google calendar event title: Jose - Vaccination appointment for Sora"
-        in captured.out
-    )
+    expected_description = "Jose - Vaccination appointment for Sora"
+    assert expected_description in captured.out
 
 
 def test_list_vaccinations_handles_pet_has_owner(capsys):
     """List pending vaccinations"""
 
     mock_session_cm = MagicMock()
+    mock_calendar = MagicMock()
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
@@ -107,13 +108,12 @@ def test_list_vaccinations_handles_pet_has_owner(capsys):
         patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet()),
         patch("vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()),
     ):
-        main.list_vaccinations()
+        main.list_vaccinations(calendar=mock_calendar)
 
+    mock_calendar.create_event.assert_called_once()
     captured = capsys.readouterr()
-    assert (
-        "Google calendar event title: Jose - Vaccination appointment for Sora"
-        in captured.out
-    )
+    expected_description = "Jose - Vaccination appointment for Sora"
+    assert expected_description in captured.out
 
 
 def test_list_vaccinations_handles_pet_has_adopter(capsys):
@@ -141,6 +141,7 @@ def test_list_vaccinations_handles_pet_has_adopter(capsys):
     )
 
     mock_session_cm = MagicMock()
+    mock_calendar = MagicMock()
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
@@ -153,11 +154,10 @@ def test_list_vaccinations_handles_pet_has_adopter(capsys):
             "vetlog_calendar.main.UserRepository.find_by_id", return_value=adopter
         ) as mock_find_user_by_id,
     ):
-        main.list_vaccinations()
+        main.list_vaccinations(calendar=mock_calendar)
 
     mock_find_user_by_id.assert_called_with(pet.adopter_id)
+    mock_calendar.create_event.assert_called_once()
     captured = capsys.readouterr()
-    assert (
-        "Google calendar event title: Sofia - Vaccination appointment for Sora"
-        in captured.out
-    )
+    expected_description = "Sofia - Vaccination appointment for Sora"
+    assert expected_description in captured.out

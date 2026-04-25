@@ -29,7 +29,7 @@ class User(SQLModel, table=True):
     # personal with default (None) values
     first_name: str = Field(default=None)
     last_name: str = Field(default=None)
-    email: str = Field(default=None)
+    email: str = Field(nullable=False)
     mobile: str = Field(default=None)
 
     # timestamps with default values
