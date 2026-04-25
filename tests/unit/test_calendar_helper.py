@@ -14,7 +14,6 @@
 
 import pytest
 
-from datetime import datetime
 from vetlog_calendar.pets.model import Pet
 from vetlog_calendar.shared.calendar_helper import Helper
 from vetlog_calendar.users.model import User
@@ -40,7 +39,7 @@ def owner():
 
 @pytest.fixture
 def vaccination():
-    return Vaccination(id=1, pet_id=1, name="C6CV", date=datetime(2026, 4, 21), status="NEW")
+    return Vaccination(id=1, pet_id=1, name="C6CV", date="2026-04-21", status="NEW")
 
 
 def test_get_event_description(pet, vaccination, owner):
@@ -51,11 +50,11 @@ def test_get_event_description(pet, vaccination, owner):
         "description": """Jose Morales\n1234567890\n\nVaccination appointment for Sora\n\nThank you for trusting Vetlog!\nhttps://vetlog.org/""",
         "start": {
             "dateTime": "2026-04-21T11:00:00-06:00",
-            "timeZone": "America/Mexico_City",
+            "timeZone": "UTC",
         },
         "end": {
             "dateTime": "2026-04-21T11:15:00-06:00",
-            "timeZone": "America/Mexico_City",
+            "timeZone": "UTC",
         },
         "attendees": [
             {"email": "contact@josdem.io"},
