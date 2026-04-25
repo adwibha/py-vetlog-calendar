@@ -28,7 +28,7 @@ from . import __project__, __version__
 def list_events():
     """List events"""
     reader = Reader()
-    reader.listing_events()
+    reader.create_event()
 
 
 def print_paths():
@@ -70,6 +70,7 @@ def list_vaccinations():
         pet_repository = PetRepository(session)
         user_repository = UserRepository(session)
         vaccinations = service.get_pending_vaccinations()
+        reader = Reader()
         for vaccination in vaccinations:
             pet = pet_repository.find_by_id(vaccination.pet_id)
 
@@ -80,8 +81,9 @@ def list_vaccinations():
             )
 
             helper = Helper(pet=pet, vaccination=vaccination, owner=user)
-            event_description = helper.get_event()
-            print(event_description)
+            event = helper.get_event()
+            reader.create_event(event)
+            print(event)
 
 
 def version_check():

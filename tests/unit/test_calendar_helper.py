@@ -49,12 +49,12 @@ def test_get_event_description(pet, vaccination, owner):
         "location": "Online",
         "description": """Jose Morales\n1234567890\n\nVaccination appointment for Sora\n\nThank you for trusting Vetlog!\nhttps://vetlog.org/""",
         "start": {
-            "dateTime": "2026-04-21T11:00:00Z",
-            "timeZone": "CST",
+            "dateTime": "2026-04-21T11:00:00-06:00",
+            "timeZone": "UTC",
         },
         "end": {
-            "dateTime": "2026-04-21T11:15:00Z",
-            "timeZone": "CST",
+            "dateTime": "2026-04-21T11:15:00-06:00",
+            "timeZone": "UTC",
         },
         "attendees": [
             {"email": "contact@josdem.io"},
