@@ -80,7 +80,7 @@ def list_vaccinations():
             )
 
             helper = Helper(pet=pet, vaccination=vaccination, owner=user)
-            event_description = helper.get_event_description()
+            event_description = helper.get_event()
             print(event_description)
 
 

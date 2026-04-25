@@ -60,4 +60,4 @@ def test_get_event_description(pet, vaccination, owner):
             {"email": "contact@josdem.io"},
         ],
     }
-    assert helper.get_event_description() == expected_description
+    assert helper.get_event() == expected_description
