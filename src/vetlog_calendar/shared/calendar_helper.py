@@ -39,12 +39,12 @@ class Helper:
             "location": "Online",
             "description": f"{owner_info}\n{pet_info}\n{thank_you_info}\n{website_info}",
             "start": {
-                "dateTime": f"{self.vaccination.date}T11:00:00-06:00",
-                "timeZone": "UTC",
+                "dateTime": f"{self.vaccination.date.date().isoformat()}T11:00:00-06:00",
+                "timeZone": "America/Mexico_City",
             },
             "end": {
-                "dateTime": f"{self.vaccination.date}T11:15:00-06:00",
-                "timeZone": "UTC",
+                "dateTime": f"{self.vaccination.date.date().isoformat()}T11:15:00-06:00",
+                "timeZone": "America/Mexico_City",
             },
             "attendees": [
                 {"email": self.owner.email},
