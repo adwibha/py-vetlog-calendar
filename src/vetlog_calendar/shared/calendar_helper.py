@@ -48,6 +48,9 @@ class Helper:
             },
             "attendees": [
                 {"email": self.owner.email},
+                {"email": "dannasofia.delacruz@gmail.com"},
+                {"email": "luisgael.delacruz@gmail.com"},
+                {"email": "contact@josdem.io"},
             ],
         }
         return event

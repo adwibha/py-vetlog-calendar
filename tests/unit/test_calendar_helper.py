@@ -58,6 +58,9 @@ def test_get_event_description(pet, vaccination, owner):
         },
         "attendees": [
             {"email": "contact@josdem.io"},
+            {"email": "dannasofia.delacruz@gmail.com"},
+            {"email": "luisgael.delacruz@gmail.com"},
+            {"email": "contact@josdem.io"},
         ],
     }
     assert helper.get_event() == expected_description
