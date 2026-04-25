@@ -33,9 +33,6 @@ uv run version
 **Run**
 
 ```sh
-# List upcoming events
-uv run events
-
 # List user's token paths
 uv run paths
 
@@ -45,7 +42,7 @@ uv run users
 # List all pets
 uv run pets
 
-# List all vaccinations
+# Check pending vaccinations and create Google Calendar events
 uv run vaccinations
 ```
 

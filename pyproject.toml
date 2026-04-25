@@ -24,7 +24,6 @@ dev = [
 
 [project.scripts]
 version = "vetlog_calendar.main:version_check"
-events = "vetlog_calendar.main:list_events"
 paths = "vetlog_calendar.main:print_paths"
 users = "vetlog_calendar.main:list_users"
 pets = "vetlog_calendar.main:list_pets"

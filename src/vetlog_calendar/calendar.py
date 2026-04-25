@@ -25,7 +25,7 @@ from .shared.config import Settings
 SCOPES = ["https://www.googleapis.com/auth/calendar.events"]
 
 
-class Reader:
+class Calendar:
     def create_event(self, event: str):
         print("Creating event")
         settings = Settings()
