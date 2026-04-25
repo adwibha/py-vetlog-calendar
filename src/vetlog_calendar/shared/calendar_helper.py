@@ -27,7 +27,7 @@ class Helper:
         owner_name = self.owner.first_name or self.owner.username
         return f"{owner_name} - Vaccination appointment for {self.pet.name}"
 
-    def get_event(self) -> str:
+    def get_event(self) -> dict:
         owner_info = (
             f"{self.owner.first_name} {self.owner.last_name}\n{self.owner.mobile}\n"
         )

@@ -26,7 +26,7 @@ SCOPES = ["https://www.googleapis.com/auth/calendar.events"]
 
 
 class Calendar:
-    def create_event(self, event: str):
+    def create_event(self, event: dict):
         print("Creating event")
         settings = Settings()
         TOKEN_PATH = settings.TOKEN_PATH
