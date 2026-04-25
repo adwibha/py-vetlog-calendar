@@ -23,7 +23,7 @@ class Helper:
         self.vaccination = vaccination
         self.owner = owner
 
-    def get_event_title(self) -> str:
+    def __get_event_title(self) -> str:
         owner_name = self.owner.first_name or self.owner.username
         return f"{owner_name} - Vaccination appointment for {self.pet.name}"
 
@@ -35,11 +35,11 @@ class Helper:
         thank_you_info = "Thank you for trusting Vetlog!"
         website_info = "https://vetlog.org/"
         event = {
-            "summary": self.get_event_title(),
+            "summary": self.__get_event_title(),
             "location": "Online",
             "description": f"{owner_info}\n{pet_info}\n{thank_you_info}\n{website_info}",
             "start": {
-                "dateTime": f"{self.vaccination.date}T11:00:00Z",  # Use ISO 8601 format
+                "dateTime": f"{self.vaccination.date}T11:00:00Z",
                 "timeZone": "CST",
             },
             "end": {

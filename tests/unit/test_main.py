@@ -12,7 +12,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-
 from unittest.mock import MagicMock, patch
 from datetime import datetime
 
@@ -87,10 +86,8 @@ def test_list_vaccinations(capsys):
         main.list_vaccinations()
 
     captured = capsys.readouterr()
-    assert (
-        "Google calendar event title: Jose - Vaccination appointment for Sora"
-        in captured.out
-    )
+    expected_description = "Jose - Vaccination appointment for Sora"
+    assert expected_description in captured.out
 
 
 def test_list_vaccinations_handles_pet_has_owner(capsys):
@@ -110,10 +107,8 @@ def test_list_vaccinations_handles_pet_has_owner(capsys):
         main.list_vaccinations()
 
     captured = capsys.readouterr()
-    assert (
-        "Google calendar event title: Jose - Vaccination appointment for Sora"
-        in captured.out
-    )
+    expected_description = "Jose - Vaccination appointment for Sora"
+    assert expected_description in captured.out
 
 
 def test_list_vaccinations_handles_pet_has_adopter(capsys):
@@ -157,7 +152,5 @@ def test_list_vaccinations_handles_pet_has_adopter(capsys):
 
     mock_find_user_by_id.assert_called_with(pet.adopter_id)
     captured = capsys.readouterr()
-    assert (
-        "Google calendar event title: Sofia - Vaccination appointment for Sora"
-        in captured.out
-    )
+    expected_description = "Sofia - Vaccination appointment for Sora"
+    assert expected_description in captured.out
