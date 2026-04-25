@@ -23,7 +23,7 @@ from googleapiclient.errors import HttpError
 
 from .shared.config import Settings
 
-SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
+SCOPES = ["https://www.googleapis.com/auth/calendar.events"]
 
 
 class Reader:
