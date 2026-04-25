@@ -46,7 +46,7 @@ def test_get_event_description(pet, vaccination, owner):
     helper = Helper(pet=pet, vaccination=vaccination, owner=owner)
     expected_description = {
         "summary": "Jose - Vaccination appointment for Sora",
-        "location": "Online",
+        "location": "Whatever works for you",
         "description": """Jose Morales\n1234567890\n\nVaccination appointment for Sora\n\nThank you for trusting Vetlog!\nhttps://vetlog.org/""",
         "start": {
             "dateTime": "2026-04-21T11:00:00-06:00",

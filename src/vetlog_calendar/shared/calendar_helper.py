@@ -36,7 +36,7 @@ class Helper:
         website_info = "https://vetlog.org/"
         event = {
             "summary": self.__get_event_title(),
-            "location": "Online",
+            "location": "Whatever works for you",
             "description": f"{owner_info}\n{pet_info}\n{thank_you_info}\n{website_info}",
             "start": {
                 "dateTime": f"{self.vaccination.date}T11:00:00-06:00",
