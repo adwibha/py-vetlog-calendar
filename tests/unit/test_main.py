@@ -82,8 +82,11 @@ def test_list_vaccinations(capsys):
         ),
         patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet()),
         patch("vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()),
+        patch("vetlog_calendar.main.Calendar.create_event") as mock_create_event,
     ):
         main.list_vaccinations()
+
+    mock_create_event.assert_called_once()
 
     captured = capsys.readouterr()
     expected_description = "Jose - Vaccination appointment for Sora"
@@ -103,9 +106,11 @@ def test_list_vaccinations_handles_pet_has_owner(capsys):
         ),
         patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet()),
         patch("vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()),
+        patch("vetlog_calendar.main.Calendar.create_event") as mock_create_event,
     ):
         main.list_vaccinations()
 
+    mock_create_event.assert_called_once()
     captured = capsys.readouterr()
     expected_description = "Jose - Vaccination appointment for Sora"
     assert expected_description in captured.out
@@ -147,10 +152,12 @@ def test_list_vaccinations_handles_pet_has_adopter(capsys):
         patch(
             "vetlog_calendar.main.UserRepository.find_by_id", return_value=adopter
         ) as mock_find_user_by_id,
+        patch("vetlog_calendar.main.Calendar.create_event") as mock_create_event,
     ):
         main.list_vaccinations()
 
     mock_find_user_by_id.assert_called_with(pet.adopter_id)
+    mock_create_event.assert_called_once()
     captured = capsys.readouterr()
     expected_description = "Sofia - Vaccination appointment for Sora"
     assert expected_description in captured.out
