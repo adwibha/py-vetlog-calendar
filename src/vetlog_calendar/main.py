@@ -12,6 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+import argparse
+
 from .shared.calendar_helper import Helper
 from .shared.database import get_session
 from .users.repository import UserRepository
@@ -58,6 +60,12 @@ def list_pets():
 
 def list_vaccinations(calendar: Calendar = None):
     """List pending vaccinations"""
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--language", type=str, default="en", help="Language for the calendar events"
+    )
+    args = parser.parse_args()
+    print(f"Using language: {args.language}")
     if calendar is None:
         calendar = Calendar()
     with get_session() as session:
