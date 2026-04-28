@@ -35,9 +35,7 @@ class Helper:
         owner_info = (
             f"{self.owner.first_name} {self.owner.last_name}\n{self.owner.mobile}\n"
         )
-        pet_info = self.locale.get_event_title(
-            owner=self.owner.first_name, pet=self.pet.name
-        )
+        pet_info = self.locale.get_pet_info(pet=self.pet.name)
         thank_you_info = self.locale.get_event_thanks()
         website_info = "https://vetlog.org/"
         event = {
