@@ -65,6 +65,7 @@ def list_vaccinations(calendar: Calendar = None):
         "--language", type=str, default="en", help="Language for the calendar events"
     )
     args = parser.parse_args()
+    print(f"Language: {args.language}")
     if calendar is None:
         calendar = Calendar()
     with get_session() as session:

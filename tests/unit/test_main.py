@@ -76,6 +76,10 @@ def test_list_vaccinations(capsys):
     mock_calendar = MagicMock()
 
     with (
+        patch(
+            "argparse.ArgumentParser.parse_args", return_value=MagicMock(language="en")
+        ),
+        patch("vetlog_calendar.main.Calendar", return_value=mock_calendar),
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
         patch(
             "vetlog_calendar.main.VaccinationService.get_pending_vaccinations",
@@ -100,6 +104,9 @@ def test_list_vaccinations_handles_pet_has_owner(capsys):
     mock_calendar = MagicMock()
 
     with (
+        patch(
+            "argparse.ArgumentParser.parse_args", return_value=MagicMock(language="en")
+        ),
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
         patch(
             "vetlog_calendar.main.VaccinationService.get_pending_vaccinations",
@@ -144,6 +151,9 @@ def test_list_vaccinations_handles_pet_has_adopter(capsys):
     mock_calendar = MagicMock()
 
     with (
+        patch(
+            "argparse.ArgumentParser.parse_args", return_value=MagicMock(language="en")
+        ),
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
         patch(
             "vetlog_calendar.main.VaccinationService.get_pending_vaccinations",
