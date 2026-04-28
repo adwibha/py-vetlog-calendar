@@ -45,7 +45,7 @@ def list_users():
 
 
 def list_pets():
-    """List all owners/adapters with pets waiting fro vacccinations"""
+    """List all owners/adopters with pets waiting for vaccinations"""
     with get_session() as session:
         vaccination_repo = VaccinationRepository(session)
         vaccination_service = VaccinationService(vaccination_repo)
