@@ -58,16 +58,8 @@ def list_pets():
             )
 
 
-def list_vaccinations(calendar: Calendar = None):
+def list_vaccinations(calendar: Calendar = None, language: str = "en"):
     """List pending vaccinations"""
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--language",
-        type=str.lower,
-        default="en",
-        help="Language for the calendar events",
-    )
-    args = parser.parse_args()
     if calendar is None:
         calendar = Calendar()
     with get_session() as session:
@@ -86,11 +78,25 @@ def list_vaccinations(calendar: Calendar = None):
             )
 
             helper = Helper(
-                pet=pet, vaccination=vaccination, owner=user, language=args.language
+                pet=pet, vaccination=vaccination, owner=user, language=language
             )
             event = helper.get_event()
             calendar.create_event(event)
             print(event)
+
+
+def vaccinations_cli():
+    """CLI entry point for list_vaccinations"""
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--language",
+        type=str.lower,
+        choices=["en", "es"],
+        default="en",
+        help="Language for the calendar events",
+    )
+    args = parser.parse_args()
+    list_vaccinations(language=args.language)
 
 
 def version_check():
