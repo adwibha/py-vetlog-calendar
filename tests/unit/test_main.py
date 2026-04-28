@@ -163,7 +163,7 @@ def test_list_vaccinations_handles_pet_has_adopter(capsys):
     assert expected_description in captured.out
     
 def test_list_pets_prints_pending_vaccinations(capsys):
-    """List all owners/adapters with pets waiting for vaccination"""
+    """List all owners/adopters with pets waiting for vaccination"""
 
     mock_session_cm = MagicMock()
 
