@@ -45,15 +45,27 @@ def list_users():
 
 
 def list_pets():
-    """List all pets"""
+    """List all owners/adapters with pets waiting fro vacccinations"""
     with get_session() as session:
-        repo = PetRepository(session)
-        service = PetService(repo)
-        pets = service.get_all()
-        for pet in pets:
-            print(
-                f"pet: {pet.name}, birth date: {pet.birth_date}, going_out_often: {pet.going_out_often}"
-            )
+        vaccination_repo = VaccinationRepository(session)
+        vaccination_service = VaccinationService(vaccination_repo)
+        user_repo = UserRepository(session)
+        pet_repo = PetRepository(session)
+        pending_vaccinations = vaccination_service.get_pending_vaccinations()
+        
+        seen_pets = set()
+        for vaccination in pending_vaccinations:
+            if vaccination.pet_id not in seen_pets:
+                seen_pets.add(vaccination.pet_id)
+                pet = pet_repo.find_by_id(vaccination.pet_id)
+                owner = ( 
+                         user_repo.find_by_id(pet.adopter_id)
+                         if pet.adopter_id is not None
+                         else user_repo.find_by_id(pet.user_id)
+                )
+                print(
+                    f"Owner: {owner.first_name} {owner.last_name}, Pet: {pet.name}, awaiting for vaccination"
+                )
 
 
 def list_vaccinations(calendar: Calendar = None):

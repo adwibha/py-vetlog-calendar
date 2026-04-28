@@ -161,3 +161,23 @@ def test_list_vaccinations_handles_pet_has_adopter(capsys):
     captured = capsys.readouterr()
     expected_description = "Sofia - Vaccination appointment for Sora"
     assert expected_description in captured.out
+    
+def test_list_pets_prints_pending_vaccinations(capsys):
+    """List all owners/adapters with pets waiting for vaccination"""
+
+    mock_session_cm = MagicMock()
+
+    with (
+        patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
+        patch(
+            "vetlog_calendar.main.VaccinationService.get_pending_vaccinations",
+            return_value=[vaccination()],
+        ),
+        patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet()),
+        patch("vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()),
+    ):
+        main.list_pets()
+
+    captured = capsys.readouterr()
+    expected_output = "Owner: Jose Morales, Pet: Sora, awaiting for vaccination"
+    assert expected_output in captured.out
