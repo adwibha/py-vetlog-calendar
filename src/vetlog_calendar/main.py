@@ -62,7 +62,10 @@ def list_vaccinations(calendar: Calendar = None):
     """List pending vaccinations"""
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--language", type=str, default="en", help="Language for the calendar events"
+        "--language",
+        type=str.lower,
+        default="en",
+        help="Language for the calendar events",
     )
     args = parser.parse_args()
     if calendar is None:
