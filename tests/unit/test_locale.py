@@ -27,3 +27,17 @@ def test_return_english_title():
     locale = Locale()
     title = locale.get_event_title(owner="Jose", pet="Sora")
     assert title == "Jose - Vaccination appointment for Sora"
+
+
+def test_return_spanish_location():
+    """Test that the location is returned in Spanish"""
+    locale = Locale(language="es")
+    location = locale.get_event_location()
+    assert location == "La que mejor funcione para ambos"
+
+
+def test_return_english_location():
+    """Test that the location is returned in English"""
+    locale = Locale()
+    location = locale.get_event_location()
+    assert location == "Whatever works for you"

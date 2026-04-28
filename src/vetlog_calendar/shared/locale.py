@@ -24,3 +24,9 @@ class Locale:
         if self.language == "es":
             return f"{owner} - Cita de vacunación para {pet}"
         return f"{owner} - Vaccination appointment for {pet}"
+
+    def get_event_location(self) -> str:
+        """Get the event location based on language"""
+        if self.language == "es":
+            return "La que mejor funcione para ambos"
+        return "Whatever works for you"
