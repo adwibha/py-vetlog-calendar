@@ -41,3 +41,17 @@ def test_return_english_location():
     locale = Locale()
     location = locale.get_event_location()
     assert location == "Whatever works for you"
+
+
+def test_return_spanish_thanks():
+    """Test that the thanks message is returned in Spanish"""
+    locale = Locale(language="es")
+    thanks = locale.get_event_thanks()
+    assert thanks == "¡Gracias por confiar en Vetlog!"
+
+
+def test_return_english_thanks():
+    """Test that the thanks message is returned in English"""
+    locale = Locale()
+    thanks = locale.get_event_thanks()
+    assert thanks == "Thank you for trusting Vetlog!"

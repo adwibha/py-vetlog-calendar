@@ -30,3 +30,9 @@ class Locale:
         if self.language == "es":
             return "La que mejor funcione para ambos"
         return "Whatever works for you"
+
+    def get_event_thanks(self) -> str:
+        """Get the event thanks message based on language"""
+        if self.language == "es":
+            return "¡Gracias por confiar en Vetlog!"
+        return "Thank you for trusting Vetlog!"
