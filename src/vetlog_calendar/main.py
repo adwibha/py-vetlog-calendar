@@ -65,7 +65,6 @@ def list_vaccinations(calendar: Calendar = None):
         "--language", type=str, default="en", help="Language for the calendar events"
     )
     args = parser.parse_args()
-    print(f"Using language: {args.language}")
     if calendar is None:
         calendar = Calendar()
     with get_session() as session:
@@ -83,7 +82,9 @@ def list_vaccinations(calendar: Calendar = None):
                 else user_repository.find_by_id(pet.user_id)
             )
 
-            helper = Helper(pet=pet, vaccination=vaccination, owner=user)
+            helper = Helper(
+                pet=pet, vaccination=vaccination, owner=user, language=args.language
+            )
             event = helper.get_event()
             calendar.create_event(event)
             print(event)

@@ -43,7 +43,7 @@ def vaccination():
 
 
 def test_get_event_description(pet, vaccination, owner):
-    helper = Helper(pet=pet, vaccination=vaccination, owner=owner)
+    helper = Helper(pet=pet, vaccination=vaccination, owner=owner, language="en")
     expected_description = {
         "summary": "Jose - Vaccination appointment for Sora",
         "location": "Whatever works for you",
