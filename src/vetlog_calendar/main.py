@@ -17,7 +17,6 @@ from .shared.database import get_session
 from .users.repository import UserRepository
 from .users.service import UserService
 from .pets.repository import PetRepository
-from .pets.service import PetService
 from .vaccinations.repository import VaccinationRepository
 from .vaccinations.service import VaccinationService
 from .calendar import Calendar
@@ -52,16 +51,16 @@ def list_pets():
         user_repo = UserRepository(session)
         pet_repo = PetRepository(session)
         pending_vaccinations = vaccination_service.get_pending_vaccinations()
-        
+
         seen_pets = set()
         for vaccination in pending_vaccinations:
             if vaccination.pet_id not in seen_pets:
                 seen_pets.add(vaccination.pet_id)
                 pet = pet_repo.find_by_id(vaccination.pet_id)
-                owner = ( 
-                         user_repo.find_by_id(pet.adopter_id)
-                         if pet.adopter_id is not None
-                         else user_repo.find_by_id(pet.user_id)
+                owner = (
+                    user_repo.find_by_id(pet.adopter_id)
+                    if pet.adopter_id is not None
+                    else user_repo.find_by_id(pet.user_id)
                 )
                 print(
                     f"Owner: {owner.first_name} {owner.last_name}, Pet: {pet.name}, awaiting for vaccination"

@@ -161,7 +161,8 @@ def test_list_vaccinations_handles_pet_has_adopter(capsys):
     captured = capsys.readouterr()
     expected_description = "Sofia - Vaccination appointment for Sora"
     assert expected_description in captured.out
-    
+
+
 def test_list_pets_prints_pending_vaccinations(capsys):
     """List all owners/adopters with pets waiting for vaccination"""
 
