@@ -52,7 +52,7 @@ def pet():
     )
 
 
-def test_list_users_prints_user_details(capsys):
+def test_list_users_prints_users_with_pets_pending_vaccinations(capsys):
     """List all users with pet with pending vaccinations"""
 
     mock_session_cm = MagicMock()
