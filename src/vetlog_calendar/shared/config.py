@@ -23,6 +23,7 @@ class Settings(BaseSettings):
     db_password: str
     TOKEN_PATH: str
     CREDENTIALS_PATH: str
+    DEFAULT_EMAILS: list[str]
 
     model_config = SettingsConfigDict(
         env_file=".env",

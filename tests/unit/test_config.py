@@ -30,6 +30,7 @@ def mock_env_vars():
             "DB_PASSWORD": "vetlogDB",
             "TOKEN_PATH": "token_path_value/token.json",
             "CREDENTIALS_PATH": "token_path_value/credentials.json",
+            "DEFAULT_EMAILS": '["email1@example.com", "email2@example.com", "email3@example.com"]',
         },
     ):
         yield
@@ -49,6 +50,11 @@ def test_settings_loads_from_env(mock_env_vars):
     assert settings.db_password == "vetlogDB"
     assert settings.TOKEN_PATH == "token_path_value/token.json"
     assert settings.CREDENTIALS_PATH == "token_path_value/credentials.json"
+    assert settings.DEFAULT_EMAILS == [
+        "email1@example.com",
+        "email2@example.com",
+        "email3@example.com",
+    ]
 
 
 def test_settings_missing_required_vars(clean_env):
