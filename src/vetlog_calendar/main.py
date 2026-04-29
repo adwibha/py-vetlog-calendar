@@ -12,6 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+import argparse
+
 from .shared.calendar_helper import Helper
 from .shared.database import get_session
 from .users.repository import UserRepository
@@ -67,7 +69,7 @@ def list_pets():
                 )
 
 
-def list_vaccinations(calendar: Calendar = None):
+def list_vaccinations(calendar: Calendar = None, language: str = "en"):
     """List pending vaccinations"""
     if calendar is None:
         calendar = Calendar()
@@ -86,10 +88,26 @@ def list_vaccinations(calendar: Calendar = None):
                 else user_repository.find_by_id(pet.user_id)
             )
 
-            helper = Helper(pet=pet, vaccination=vaccination, owner=user)
+            helper = Helper(
+                pet=pet, vaccination=vaccination, owner=user, language=language
+            )
             event = helper.get_event()
             calendar.create_event(event)
             print(event)
+
+
+def vaccinations_cli():
+    """CLI entry point for list_vaccinations"""
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--language",
+        type=str.lower,
+        choices=["en", "es"],
+        default="en",
+        help="Language for the calendar events",
+    )
+    args = parser.parse_args()
+    list_vaccinations(language=args.language)
 
 
 def version_check():

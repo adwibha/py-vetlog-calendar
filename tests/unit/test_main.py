@@ -76,6 +76,7 @@ def test_list_vaccinations(capsys):
     mock_calendar = MagicMock()
 
     with (
+        patch("vetlog_calendar.main.Calendar", return_value=mock_calendar),
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
         patch(
             "vetlog_calendar.main.VaccinationService.get_pending_vaccinations",
@@ -84,7 +85,7 @@ def test_list_vaccinations(capsys):
         patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet()),
         patch("vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()),
     ):
-        main.list_vaccinations(calendar=mock_calendar)
+        main.list_vaccinations(calendar=mock_calendar, language="en")
 
     mock_calendar.create_event.assert_called_once()
 
@@ -108,7 +109,7 @@ def test_list_vaccinations_handles_pet_has_owner(capsys):
         patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet()),
         patch("vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()),
     ):
-        main.list_vaccinations(calendar=mock_calendar)
+        main.list_vaccinations(calendar=mock_calendar, language="en")
 
     mock_calendar.create_event.assert_called_once()
     captured = capsys.readouterr()
@@ -154,7 +155,7 @@ def test_list_vaccinations_handles_pet_has_adopter(capsys):
             "vetlog_calendar.main.UserRepository.find_by_id", return_value=adopter
         ) as mock_find_user_by_id,
     ):
-        main.list_vaccinations(calendar=mock_calendar)
+        main.list_vaccinations(calendar=mock_calendar, language="en")
 
     mock_find_user_by_id.assert_called_with(pet.adopter_id)
     mock_calendar.create_event.assert_called_once()
