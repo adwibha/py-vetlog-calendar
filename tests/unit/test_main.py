@@ -69,7 +69,9 @@ def test_list_users_prints_user_details(capsys):
         main.list_users()
 
     captured = capsys.readouterr()
-    expected_output = "josdem - Jose Morales - contact@josdem.io - Pet: Sora - awaiting for vaccination"
+    expected_output = (
+        "josdem - Jose Morales - contact@josdem.io - Pet: Sora - awaiting vaccination"
+    )
     assert expected_output in captured.out
 
 
@@ -184,5 +186,5 @@ def test_list_pets_prints_pending_vaccinations(capsys):
         main.list_pets()
 
     captured = capsys.readouterr()
-    expected_output = "Owner: Jose Morales, Pet: Sora, awaiting for vaccination"
+    expected_output = "Owner: Jose Morales, Pet: Sora, awaiting vaccination"
     assert expected_output in captured.out

@@ -53,7 +53,7 @@ def list_users():
                 else user_repo.find_by_id(pet.user_id)
             )
             print(
-                f"{owner.username} - {owner.first_name} {owner.last_name} - {owner.email} - Pet: {pet.name} - awaiting for vaccination"
+                f"{owner.username} - {owner.first_name} {owner.last_name} - {owner.email} - Pet: {pet.name} - awaiting vaccination"
             )
 
 
@@ -77,7 +77,7 @@ def list_pets():
                     else user_repo.find_by_id(pet.user_id)
                 )
                 print(
-                    f"Owner: {owner.first_name} {owner.last_name}, Pet: {pet.name}, awaiting for vaccination"
+                    f"Owner: {owner.first_name} {owner.last_name}, Pet: {pet.name}, awaiting vaccination"
                 )
 
 
