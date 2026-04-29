@@ -36,10 +36,10 @@ uv run version
 # List user's token paths
 uv run paths
 
-# List all users
+# List users with pets with pending vaccinations
 uv run users
 
-# List all pets with pending vaccinations
+# List pets with pending vaccinations
 uv run pets
 
 # Check pending vaccinations and create Google Calendar events
