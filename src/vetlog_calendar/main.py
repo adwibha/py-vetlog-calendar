@@ -41,9 +41,10 @@ def list_users():
         vaccination_service = VaccinationService(vaccination_repo)
 
         pending_vaccinations = vaccination_service.get_pending_vaccinations()
+        pending_pet_ids = {v.pet_id for v in pending_vaccinations}
         pets = pet_repo.get_all()
         pet_with_pending_vaccinations = [
-            pet for pet in pets if pet.id in {v.pet_id for v in pending_vaccinations}
+            pet for pet in pets if pet.id in pending_pet_ids
         ]
 
         for pet in pet_with_pending_vaccinations:
