@@ -12,12 +12,32 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+import os
+
 import pytest
+from requests import patch
 
 from vetlog_calendar.pets.model import Pet
 from vetlog_calendar.shared.calendar_helper import Helper
 from vetlog_calendar.users.model import User
 from vetlog_calendar.vaccinations.model import Vaccination
+
+
+@pytest.fixture
+def mock_env_vars():
+    with patch.dict(
+        os.environ,
+        {
+            "DEFAULT_EMAILS": '["email1@example.com", "email2@example.com", "email3@example.com"]'
+        },
+    ):
+        yield
+
+
+@pytest.fixture
+def clean_env():
+    with patch.dict(os.environ, {}, clear=True):
+        yield
 
 
 @pytest.fixture
@@ -33,7 +53,7 @@ def owner():
         first_name="Jose",
         last_name="Morales",
         mobile="1234567890",
-        email="email@josdem.io",
+        email="contact@josdem.io",
     )
 
 
@@ -57,10 +77,10 @@ def test_get_event_description(pet, vaccination, owner):
             "timeZone": "UTC",
         },
         "attendees": [
-            {"email": "email@josdem.io"},
-            {"email": "dannasofia.delacruz@gmail.com"},
-            {"email": "dafnervaldesor@gmail.com"},
             {"email": "contact@josdem.io"},
+            {"email": "email1@example.com"},
+            {"email": "email2@example.com"},
+            {"email": "email3@example.com"},
         ],
     }
     assert helper.get_event() == expected_description
