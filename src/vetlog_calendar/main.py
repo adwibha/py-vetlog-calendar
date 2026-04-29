@@ -33,7 +33,7 @@ def print_paths():
 
 
 def list_users():
-    """List all users with pet with pending vaccinations"""
+    """List users with pets with pending vaccinations"""
     with get_session() as session:
         user_repo = UserRepository(session)
         pet_repo = PetRepository(session)
