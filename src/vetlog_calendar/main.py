@@ -21,7 +21,7 @@ from .users.service import UserService
 from .pets.repository import PetRepository
 from .vaccinations.repository import VaccinationRepository
 from .vaccinations.service import VaccinationService
-from .calendar import Calendar
+from .shared.calendar import Calendar
 from .shared.config import Settings
 from . import __project__, __version__
 
