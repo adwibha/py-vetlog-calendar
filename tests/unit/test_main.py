@@ -52,22 +52,27 @@ def pet():
     )
 
 
-def test_list_users_prints_user_details(capsys):
-    """List all users prints expected user details"""
+def test_list_users_prints_users_with_pets_pending_vaccinations(capsys):
+    """List all users with pet with pending vaccinations"""
 
     mock_session_cm = MagicMock()
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
-        patch("vetlog_calendar.main.UserService.get_all", return_value=[owner()]),
+        patch(
+            "vetlog_calendar.main.VaccinationService.get_pending_vaccinations",
+            return_value=[vaccination()],
+        ),
+        patch("vetlog_calendar.main.PetRepository.get_all", return_value=[pet()]),
+        patch("vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()),
     ):
         main.list_users()
 
     captured = capsys.readouterr()
-    assert "user: josdem" in captured.out
-    assert "email: contact@josdem.io" in captured.out
-    assert "mobile: 1234567890" in captured.out
-    assert "role: USER" in captured.out
+    expected_output = (
+        "josdem - Jose Morales - contact@josdem.io - Pet: Sora - awaiting vaccination"
+    )
+    assert expected_output in captured.out
 
 
 def test_list_vaccinations(capsys):
@@ -181,5 +186,5 @@ def test_list_pets_prints_pending_vaccinations(capsys):
         main.list_pets()
 
     captured = capsys.readouterr()
-    expected_output = "Owner: Jose Morales, Pet: Sora, awaiting for vaccination"
+    expected_output = "Owner: Jose Morales, Pet: Sora, awaiting vaccination"
     assert expected_output in captured.out
