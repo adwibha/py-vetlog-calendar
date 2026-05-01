@@ -13,7 +13,7 @@
 #  limitations under the License
 
 from typing import Sequence
-from sqlmodel import Session, select
+from sqlmodel import Session, select, update
 
 from vetlog_calendar.vaccinations.model import Vaccination
 
@@ -25,3 +25,12 @@ class VaccinationRepository:
     def find_pending_vaccinations(self) -> Sequence[Vaccination]:
         stmt = select(Vaccination).where(Vaccination.status == "NEW")
         return self.session.exec(stmt).all()
+
+    def update_vaccination_status(self, vaccination: Vaccination):
+        stmt = (
+            update(Vaccination)
+            .where(Vaccination.id == vaccination.id)
+            .values(status="PENDING")
+        )
+        self.session.exec(stmt)
+        self.session.commit()
