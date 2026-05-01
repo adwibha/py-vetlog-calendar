@@ -20,7 +20,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-from .shared.config import Settings
+from .config import Settings
 
 SCOPES = ["https://www.googleapis.com/auth/calendar.events"]
 
@@ -29,22 +29,22 @@ class Calendar:
     def create_event(self, event: dict):
         print("Creating event")
         settings = Settings()
-        TOKEN_PATH = settings.TOKEN_PATH
-        CREDENTIALS_PATH = settings.CREDENTIALS_PATH
+        token_path = settings.TOKEN_PATH
+        credentials_path = settings.CREDENTIALS_PATH
         creds = None
-        if os.path.exists(TOKEN_PATH):
-            creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)
+        if os.path.exists(token_path):
+            creds = Credentials.from_authorized_user_file(token_path, SCOPES)
         if not creds or not creds.valid:
             print("No valid credentials")
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                    CREDENTIALS_PATH, SCOPES
+                    credentials_path, SCOPES
                 )
                 creds = flow.run_local_server(port=0)
             # Save the credentials for the next run
-            with open(TOKEN_PATH, "w") as token:
+            with open(token_path, "w") as token:
                 token.write(creds.to_json())
         try:
             service = build("calendar", "v3", credentials=creds)

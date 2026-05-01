@@ -17,11 +17,10 @@ import argparse
 from .shared.calendar_helper import Helper
 from .shared.database import get_session
 from .users.repository import UserRepository
-from .users.service import UserService
 from .pets.repository import PetRepository
 from .vaccinations.repository import VaccinationRepository
 from .vaccinations.service import VaccinationService
-from .calendar import Calendar
+from .shared.calendar import Calendar
 from .shared.config import Settings
 from . import __project__, __version__
 
@@ -34,14 +33,28 @@ def print_paths():
 
 
 def list_users():
-    """List all users"""
+    """List users with pets with pending vaccinations"""
     with get_session() as session:
-        repo = UserRepository(session)
-        service = UserService(repo)
-        users = service.get_all()
-        for user in users:
+        user_repo = UserRepository(session)
+        pet_repo = PetRepository(session)
+        vaccination_repo = VaccinationRepository(session)
+        vaccination_service = VaccinationService(vaccination_repo)
+
+        pending_vaccinations = vaccination_service.get_pending_vaccinations()
+        pending_pet_ids = {v.pet_id for v in pending_vaccinations}
+        pets = pet_repo.get_all()
+        pet_with_pending_vaccinations = [
+            pet for pet in pets if pet.id in pending_pet_ids
+        ]
+
+        for pet in pet_with_pending_vaccinations:
+            owner = (
+                user_repo.find_by_id(pet.adopter_id)
+                if pet.adopter_id is not None
+                else user_repo.find_by_id(pet.user_id)
+            )
             print(
-                f"user: {user.username}, email: {user.email}, mobile: {user.mobile}, role: {user.role}"
+                f"{owner.username} - {owner.first_name} {owner.last_name} - {owner.email} - Pet: {pet.name} - awaiting vaccination"
             )
 
 
@@ -65,7 +78,7 @@ def list_pets():
                     else user_repo.find_by_id(pet.user_id)
                 )
                 print(
-                    f"Owner: {owner.first_name} {owner.last_name}, Pet: {pet.name}, awaiting for vaccination"
+                    f"Owner: {owner.first_name} {owner.last_name}, Pet: {pet.name}, awaiting vaccination"
                 )
 
 
