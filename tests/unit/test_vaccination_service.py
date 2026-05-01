@@ -33,3 +33,13 @@ def test_get_vaccinations(mock_repo):
     ]
     mock_repo.find_pending_vaccinations.return_value = vaccinations
     assert service.get_pending_vaccinations() == vaccinations
+
+
+def test_update_vaccination_status(mock_repo):
+    """Update vaccination status to PENDING"""
+    service = VaccinationService(repository=mock_repo)
+    vaccination = Vaccination(
+        id=1, name="Rabies", date="2026-04-21", pet_id=2, status="NEW"
+    )
+    service.update_vaccination_status(vaccination)
+    mock_repo.update_vaccination_status.assert_called_once_with(vaccination)

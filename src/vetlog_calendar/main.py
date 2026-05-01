@@ -106,6 +106,7 @@ def list_vaccinations(calendar: Calendar = None, language: str = "en"):
             )
             event = helper.get_event()
             calendar.create_event(event)
+            service.update_vaccination_status(vaccination)
             print(event)
 
 
