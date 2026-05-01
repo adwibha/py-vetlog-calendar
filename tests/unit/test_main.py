@@ -113,7 +113,6 @@ def test_list_vaccinations(capsys, mock_env_vars):
     mock_service.get_pending_vaccinations.return_value = [vaccination_instance]
 
     with (
-        patch("vetlog_calendar.main.Calendar", return_value=mock_calendar),
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
         patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet()),
         patch("vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()),
