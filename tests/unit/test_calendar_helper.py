@@ -15,12 +15,15 @@
 import os
 
 import pytest
-from requests import patch
+from unittest.mock import patch
 
 from vetlog_calendar.pets.model import Pet
 from vetlog_calendar.shared.calendar_helper import Helper
 from vetlog_calendar.users.model import User
 from vetlog_calendar.vaccinations.model import Vaccination
+
+from pydantic import ValidationError
+from vetlog_calendar.shared.config import Settings
 
 
 @pytest.fixture
@@ -84,3 +87,8 @@ def test_get_event_description(pet, vaccination, owner):
         ],
     }
     assert helper.get_event() == expected_description
+
+
+def test_settings_missing_required_vars(clean_env):
+    with pytest.raises(ValidationError):
+        Settings(_env_file=None)

@@ -44,9 +44,7 @@ def test_create_event_with_valid_credentials(event):
             "vetlog_calendar.shared.calendar.Credentials.from_authorized_user_file",
             return_value=mock_creds,
         ),
-        patch(
-            "vetlog_calendar.shared.calendar.build", return_value=mock_service
-        ),
+        patch("vetlog_calendar.shared.calendar.build", return_value=mock_service),
     ):
         mock_settings_cls.return_value.TOKEN_PATH = "/tmp/token.json"
         mock_settings_cls.return_value.CREDENTIALS_PATH = "/tmp/credentials.json"
@@ -76,9 +74,7 @@ def test_create_event_refreshes_expired_credentials(event):
             return_value=mock_creds,
         ),
         patch("vetlog_calendar.shared.calendar.Request") as mock_request_cls,
-        patch(
-            "vetlog_calendar.shared.calendar.build", return_value=mock_service
-        ),
+        patch("vetlog_calendar.shared.calendar.build", return_value=mock_service),
         patch("builtins.open", mock_open()),
     ):
         mock_settings_cls.return_value.TOKEN_PATH = "/tmp/token.json"
@@ -107,9 +103,7 @@ def test_create_event_runs_oauth_flow_when_no_token(event):
             "vetlog_calendar.shared.calendar.InstalledAppFlow.from_client_secrets_file",
             return_value=mock_flow,
         ),
-        patch(
-            "vetlog_calendar.shared.calendar.build", return_value=mock_service
-        ),
+        patch("vetlog_calendar.shared.calendar.build", return_value=mock_service),
         patch("builtins.open", mock_open()),
     ):
         mock_settings_cls.return_value.TOKEN_PATH = "/tmp/token.json"
@@ -145,9 +139,7 @@ def test_create_event_handles_http_error(event, capsys):
             "vetlog_calendar.shared.calendar.Credentials.from_authorized_user_file",
             return_value=mock_creds,
         ),
-        patch(
-            "vetlog_calendar.shared.calendar.build", return_value=mock_service
-        ),
+        patch("vetlog_calendar.shared.calendar.build", return_value=mock_service),
     ):
         mock_settings_cls.return_value.TOKEN_PATH = "/tmp/token.json"
         mock_settings_cls.return_value.CREDENTIALS_PATH = "/tmp/credentials.json"
