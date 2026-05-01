@@ -17,6 +17,8 @@ from vetlog_calendar.shared.locale import Locale
 from vetlog_calendar.users.model import User
 from vetlog_calendar.vaccinations.model import Vaccination
 
+from .config import get_settings
+
 
 class Helper:
     def __init__(
@@ -52,9 +54,7 @@ class Helper:
             },
             "attendees": [
                 {"email": self.owner.email},
-                {"email": "dannasofia.delacruz@gmail.com"},
-                {"email": "dafnervaldesor@gmail.com"},
-                {"email": "contact@josdem.io"},
+                *[{"email": email} for email in get_settings().DEFAULT_EMAILS],
             ],
         }
         return event
