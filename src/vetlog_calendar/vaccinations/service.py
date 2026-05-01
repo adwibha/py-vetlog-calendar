@@ -12,6 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License
 
+from vetlog_calendar.vaccinations.model import Vaccination
 from vetlog_calendar.vaccinations.repository import VaccinationRepository
 
 
@@ -23,6 +24,6 @@ class VaccinationService:
         """Return pending vaccinations"""
         return self.repository.find_pending_vaccinations()
 
-    def update_vaccination_status(self, vaccination: "Vaccination") -> None:
+    def update_vaccination_status(self, vaccination: Vaccination) -> None:
         """Update vaccination status to PENDING"""
         self.repository.update_vaccination_status(vaccination)
