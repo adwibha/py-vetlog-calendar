@@ -12,13 +12,42 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+import os
+import pytest
+
 from unittest.mock import MagicMock, patch
 from datetime import datetime
 
+from pydantic import ValidationError
+
 from vetlog_calendar import main
 from vetlog_calendar.pets.model import Pet
+from vetlog_calendar.shared.config import Settings
 from vetlog_calendar.users.model import User
 from vetlog_calendar.vaccinations.model import Vaccination
+
+
+@pytest.fixture
+def clean_env():
+    with patch.dict(os.environ, {}, clear=True):
+        yield
+
+
+@pytest.fixture
+def mock_env_vars():
+    with patch.dict(
+        os.environ,
+        {
+            "db_host": "localhost",
+            "db_name": "vetlog",
+            "db_user": "vetlogUser",
+            "db_password": "vetlogDB",
+            "TOKEN_PATH": "path/to/token.json",
+            "CREDENTIALS_PATH": "path/to/credentials.json",
+            "default_emails": '["email1@example.com", "email2@example.com", "email3@example.com"]',
+        },
+    ):
+        yield
 
 
 def owner():
@@ -75,7 +104,7 @@ def test_list_users_prints_users_with_pets_pending_vaccinations(capsys):
     assert expected_output in captured.out
 
 
-def test_list_vaccinations(capsys):
+def test_list_vaccinations(capsys, mock_env_vars):
     """List pending vaccinations"""
     mock_session_cm = MagicMock()
     mock_calendar = MagicMock()
@@ -188,3 +217,8 @@ def test_list_pets_prints_pending_vaccinations(capsys):
     captured = capsys.readouterr()
     expected_output = "Owner: Jose Morales, Pet: Sora, awaiting vaccination"
     assert expected_output in captured.out
+
+
+def test_settings_missing_required_vars(clean_env):
+    with pytest.raises(ValidationError):
+        Settings(_env_file=None)
