@@ -17,7 +17,7 @@ from vetlog_calendar.shared.locale import Locale
 from vetlog_calendar.users.model import User
 from vetlog_calendar.vaccinations.model import Vaccination
 
-from .config import Settings
+from .config import get_settings
 
 
 class Helper:
@@ -54,7 +54,7 @@ class Helper:
             },
             "attendees": [
                 {"email": self.owner.email},
-                *[{"email": email} for email in Settings().DEFAULT_EMAILS],
+                *[{"email": email} for email in get_settings().DEFAULT_EMAILS],
             ],
         }
         return event
