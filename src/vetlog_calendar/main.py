@@ -89,8 +89,8 @@ def list_vaccinations(
     if calendar is None:
         calendar = Calendar()
     with get_session() as session:
-        repo = VaccinationRepository(session)
         if service is None:
+            repo = VaccinationRepository(session)
             service = VaccinationService(repo)
         pet_repository = PetRepository(session)
         user_repository = UserRepository(session)
