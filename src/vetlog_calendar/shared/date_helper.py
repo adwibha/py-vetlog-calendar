@@ -15,13 +15,10 @@
 from datetime import datetime, timedelta
 
 
-def validate_date(date_str: str) -> str:
+def validate_date(date: datetime) -> datetime:
     """Validate if day of the week is valid"""
-    date = datetime.strptime(date_str, "%Y-%m-%d")
-    week_day = date.weekday()
-    match week_day:
+    match date.weekday():
         case 0 | 1:
-            new_date = date + timedelta(days=2)
-            return new_date.strftime("%Y-%m-%d")
-        case 2 | 3 | 4 | 5 | 6:
-            return date_str
+            return date + timedelta(days=2)
+        case _:
+            return date
