@@ -108,7 +108,8 @@ def list_vaccinations(
                 pet=pet, vaccination=vaccination, owner=user, language=language
             )
             event = helper.get_event()
-            calendar.create_event(event)
+            if pet.status != "DECEASED":
+                calendar.create_event(event)
             service.update_vaccination_status(vaccination)
             print(event)
 
