@@ -16,6 +16,7 @@ import os
 
 import pytest
 from unittest.mock import MagicMock, patch
+from datetime import datetime
 
 from vetlog_calendar.pets.model import Pet
 from vetlog_calendar.shared.calendar_helper import Helper
@@ -51,7 +52,9 @@ def owner():
 
 @pytest.fixture
 def vaccination():
-    return Vaccination(id=1, pet_id=1, name="C6CV", date="2026-04-21", status="NEW")
+    return Vaccination(
+        id=1, pet_id=1, name="C6CV", date=datetime(2026, 5, 21), status="NEW"
+    )
 
 
 def test_get_event_description(pet, vaccination, owner):
@@ -71,11 +74,11 @@ def test_get_event_description(pet, vaccination, owner):
             "location": "Whatever works for you",
             "description": """Jose Morales\n1234567890\n\nVaccination appointment for Sora\n\nThank you for trusting Vetlog!\nhttps://vetlog.org/""",
             "start": {
-                "dateTime": "2026-04-21T11:00:00-06:00",
+                "dateTime": "2026-05-21T11:00:00-06:00",
                 "timeZone": "UTC",
             },
             "end": {
-                "dateTime": "2026-04-21T11:15:00-06:00",
+                "dateTime": "2026-05-21T11:15:00-06:00",
                 "timeZone": "UTC",
             },
             "attendees": [
@@ -86,6 +89,24 @@ def test_get_event_description(pet, vaccination, owner):
             ],
         }
         assert helper.get_event() == expected_description
+
+
+def test_get_event_shifts_monday_date_by_two_days(pet, owner):
+    monday_vaccination = Vaccination(
+        id=2, pet_id=1, name="C6CV", date=datetime(2026, 5, 25), status="NEW"
+    )  # Monday → shifted to Wednesday 2026-05-27
+    mock_settings = MagicMock()
+    mock_settings.DEFAULT_EMAILS = []
+    with patch(
+        "vetlog_calendar.shared.calendar_helper.get_settings",
+        return_value=mock_settings,
+    ):
+        helper = Helper(
+            pet=pet, vaccination=monday_vaccination, owner=owner, language="en"
+        )
+        event = helper.get_event()
+        assert event["start"]["dateTime"] == "2026-05-27T11:00:00-06:00"
+        assert event["end"]["dateTime"] == "2026-05-27T11:15:00-06:00"
 
 
 def test_settings_missing_required_vars(clean_env):

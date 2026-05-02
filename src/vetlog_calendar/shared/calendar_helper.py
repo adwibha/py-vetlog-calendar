@@ -12,6 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from . import date_helper
+
 from vetlog_calendar.pets.model import Pet
 from vetlog_calendar.shared.locale import Locale
 from vetlog_calendar.users.model import User
@@ -40,16 +42,17 @@ class Helper:
         pet_info = self.locale.get_pet_info(pet=self.pet.name)
         thank_you_info = self.locale.get_event_thanks()
         website_info = "https://vetlog.org/"
+        validated_date = date_helper.validate_date(self.vaccination.date)
         event = {
             "summary": self.__get_event_title(),
             "location": self.locale.get_event_location(),
             "description": f"{owner_info}\n{pet_info}\n{thank_you_info}\n{website_info}",
             "start": {
-                "dateTime": f"{self.vaccination.date}T11:00:00-06:00",
+                "dateTime": f"{validated_date.strftime('%Y-%m-%d')}T11:00:00-06:00",
                 "timeZone": "UTC",
             },
             "end": {
-                "dateTime": f"{self.vaccination.date}T11:15:00-06:00",
+                "dateTime": f"{validated_date.strftime('%Y-%m-%d')}T11:15:00-06:00",
                 "timeZone": "UTC",
             },
             "attendees": [
