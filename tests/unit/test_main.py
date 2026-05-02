@@ -66,7 +66,7 @@ def vaccination():
     return Vaccination(
         pet_id=1,
         name="Rabies",
-        date=datetime(2026, 1, 1, 0, 0, 0),
+        date="2024-05-21",
     )
 
 
