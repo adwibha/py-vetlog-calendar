@@ -22,8 +22,3 @@ def validate_date(date: datetime) -> datetime:
             return date + timedelta(days=2)
         case _:
             return date
-
-
-
-        case _:
-            raise ValueError(f"Unexpected weekday value: {week_day}")
