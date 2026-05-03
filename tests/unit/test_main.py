@@ -199,6 +199,45 @@ def test_list_vaccinations_handles_pet_has_adopter(capsys):
     assert expected_description in captured.out
 
 
+def test_list_vaccinations_handles_pet_is_deceased(capsys):
+    """List pending vaccinations"""
+
+    pet = Pet(
+        id=1,
+        user_id=1,
+        adopter_id=2,
+        name="Sora",
+        birth_date=datetime(2020, 1, 1, 0, 0, 0),
+        breed_id=1,
+        status="DECEASED",
+        uuid="pet-uuid",
+    )
+
+    mock_session_cm = MagicMock()
+    mock_calendar = MagicMock()
+    mock_service = MagicMock()
+    vaccination_instance = vaccination()
+    mock_service.get_pending_vaccinations.return_value = [vaccination_instance]
+
+    with (
+        patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
+        patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet),
+        patch(
+            "vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()
+        ) as mock_find_user_by_id,
+    ):
+        main.list_vaccinations(
+            calendar=mock_calendar, service=mock_service, language="en"
+        )
+
+    mock_find_user_by_id.assert_called_with(pet.adopter_id)
+    mock_calendar.create_event.assert_not_called()
+    mock_service.update_vaccination_status.assert_not_called()
+    captured = capsys.readouterr()
+    expected_description = "Jose - Vaccination appointment for Sora"
+    assert expected_description in captured.out
+
+
 def test_list_pets_prints_pending_vaccinations(capsys):
     """List all owners/adopters with pets waiting for vaccination"""
 
