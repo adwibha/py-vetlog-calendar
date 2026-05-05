@@ -232,7 +232,7 @@ def test_list_vaccinations_handles_pet_is_deceased(capsys):
 
     mock_find_user_by_id.assert_called_with(pet.adopter_id)
     mock_calendar.create_event.assert_not_called()
-    mock_service.update_vaccination_status.assert_not_called()
+    mock_service.update_vaccination_status.assert_called_once_with(vaccination_instance)
     captured = capsys.readouterr()
     expected_description = "Jose - Vaccination appointment for Sora"
     assert expected_description in captured.out
