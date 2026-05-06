@@ -33,7 +33,29 @@ def test_find_pending_dewormings():
         status="APPLIED",
     )
     session.exec.return_value.all.return_value = [vaccination]
+
+    before_call = datetime.now()
     pending_dewormings = repository.find_pending_dewormings()
+    after_call = datetime.now()
+
+    session.exec.assert_called_once()
+    statement = session.exec.call_args.args[0]
+    compiled_statement = statement.compile()
+    statement_text = str(compiled_statement)
+
+    assert "status" in statement_text
+    assert "date" in statement_text
+    assert any(value == "APPLIED" for value in compiled_statement.params.values())
+
+    datetime_params = [
+        value for value in compiled_statement.params.values() if isinstance(value, datetime)
+    ]
+    assert len(datetime_params) == 1
+
+    expected_lower_bound = before_call - timedelta(days=30 * 6)
+    expected_upper_bound = after_call - timedelta(days=30 * 6)
+    assert expected_lower_bound <= datetime_params[0] <= expected_upper_bound
+
     assert len(pending_dewormings) == 1
     assert pending_dewormings[0].id == vaccination.id
     assert pending_dewormings[0].status == "APPLIED"
