@@ -24,6 +24,10 @@ class VaccinationService:
         """Return pending vaccinations"""
         return self.repository.find_pending_vaccinations()
 
+    def get_pending_dewormings(self):
+        """Return pending dewormings"""
+        return self.repository.find_pending_dewormings()
+
     def update_vaccination_status(self, vaccination: Vaccination) -> None:
         """Update vaccination status to PENDING"""
         self.repository.update_vaccination_status(vaccination)
