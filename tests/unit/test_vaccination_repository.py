@@ -28,12 +28,30 @@ def test_find_pending_dewormings():
     # Create a vaccination with status "APPLIED" and date 7 months ago
     vaccination = Vaccination(
         id=1,
+        pet_id=1,
         name="Deworming",
         date=datetime.now() - timedelta(days=30 * 7),
         status="APPLIED",
     )
     session.exec.return_value.all.return_value = [vaccination]
+
     pending_dewormings = repository.find_pending_dewormings(6)
+
+    session.exec.assert_called_once()
+    statement = session.exec.call_args.args[0]
+    compiled_statement = statement.compile()
+    statement_text = str(compiled_statement)
+
+    assert "status" in statement_text
+    assert "date" in statement_text
+    assert any(value == "APPLIED" for value in compiled_statement.params.values())
+
+    datetime_params = [
+        value
+        for value in compiled_statement.params.values()
+        if isinstance(value, datetime)
+    ]
+    assert len(datetime_params) == 0 or len(datetime_params) == 1
     assert len(pending_dewormings) == 1
     assert pending_dewormings[0].id == vaccination.id
     assert pending_dewormings[0].status == "APPLIED"
