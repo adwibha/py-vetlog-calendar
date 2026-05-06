@@ -33,7 +33,7 @@ def test_find_pending_dewormings():
         status="APPLIED",
     )
     session.exec.return_value.all.return_value = [vaccination]
-    pending_dewormings = repository.find_pending_dewormings()
+    pending_dewormings = repository.find_pending_dewormings(6)
     assert len(pending_dewormings) == 1
     assert pending_dewormings[0].id == vaccination.id
     assert pending_dewormings[0].status == "APPLIED"
