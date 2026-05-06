@@ -28,6 +28,7 @@ def test_find_pending_dewormings():
     # Create a vaccination with status "APPLIED" and date 7 months ago
     vaccination = Vaccination(
         id=1,
+        pet_id=1,
         name="Deworming",
         date=datetime.now() - timedelta(days=30 * 7),
         status="APPLIED",
