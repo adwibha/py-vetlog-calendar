@@ -24,9 +24,13 @@ class VaccinationService:
         """Return pending vaccinations"""
         return self.repository.find_pending_vaccinations()
 
-    def get_pending_dewormings(self):
+    def get_pending_dewormings(self, months: int):
         """Return pending dewormings"""
-        return self.repository.find_pending_dewormings()
+        return self.repository.find_pending_dewormings(months)
+
+    def get_possible_dewormings(self):
+        """Return possible dewormings for outdoor pets"""
+        return self.repository.find_pending_dewormings(6)
 
     def update_vaccination_status(self, vaccination: Vaccination) -> None:
         """Update vaccination status to PENDING"""

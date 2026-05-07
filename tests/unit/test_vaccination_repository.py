@@ -35,9 +35,9 @@ def test_find_pending_dewormings():
     )
     session.exec.return_value.all.return_value = [vaccination]
 
-    before_call = datetime.now()
-    pending_dewormings = repository.find_pending_dewormings()
-    after_call = datetime.now()
+    before_cutoff = datetime.now() - timedelta(days=30 * 6)
+    pending_dewormings = repository.find_pending_dewormings(6)
+    after_cutoff = datetime.now() - timedelta(days=30 * 6)
 
     session.exec.assert_called_once()
     statement = session.exec.call_args.args[0]
@@ -46,7 +46,9 @@ def test_find_pending_dewormings():
 
     assert "status" in statement_text
     assert "date" in statement_text
+    assert "name" in statement_text
     assert any(value == "APPLIED" for value in compiled_statement.params.values())
+    assert any(value == "Deworming" for value in compiled_statement.params.values())
 
     datetime_params = [
         value
@@ -54,11 +56,7 @@ def test_find_pending_dewormings():
         if isinstance(value, datetime)
     ]
     assert len(datetime_params) == 1
-
-    expected_lower_bound = before_call - timedelta(days=30 * 6)
-    expected_upper_bound = after_call - timedelta(days=30 * 6)
-    assert expected_lower_bound <= datetime_params[0] <= expected_upper_bound
-
+    assert before_cutoff <= datetime_params[0] <= after_cutoff
     assert len(pending_dewormings) == 1
     assert pending_dewormings[0].id == vaccination.id
     assert pending_dewormings[0].status == "APPLIED"

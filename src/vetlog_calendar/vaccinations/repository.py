@@ -16,7 +16,7 @@ from typing import Sequence
 from datetime import datetime, timedelta
 from sqlmodel import Session, select, update
 
-from vetlog_calendar.vaccinations.model import Vaccination
+from vetlog_calendar.vaccinations.model import Vaccination, VaccineType
 
 
 class VaccinationRepository:
@@ -27,10 +27,11 @@ class VaccinationRepository:
         stmt = select(Vaccination).where(Vaccination.status == "NEW")
         return self.session.exec(stmt).all()
 
-    def find_pending_dewormings(self) -> Sequence[Vaccination]:
+    def find_pending_dewormings(self, months: int) -> Sequence[Vaccination]:
         stmt = select(Vaccination).where(
-            Vaccination.status == "APPLIED",
-            Vaccination.date <= datetime.now() - timedelta(days=30 * 6),
+            (Vaccination.status == "APPLIED")
+            & (Vaccination.name == VaccineType.DEWORMING)
+            & (Vaccination.date <= datetime.now() - timedelta(days=30 * months))
         )
         return self.session.exec(stmt).all()
 
