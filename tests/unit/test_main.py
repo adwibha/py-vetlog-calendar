@@ -338,7 +338,9 @@ def test_prints_pending_dewormings_once_when_also_possible_for_outdoor_pet(capsy
             "vetlog_calendar.main.VaccinationService.get_possible_dewormings",
             return_value=[deworming_instance],
         ),
-        patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=outdoor_pet),
+        patch(
+            "vetlog_calendar.main.PetRepository.find_by_id", return_value=outdoor_pet
+        ),
     ):
         main.list_dewormings()
 
