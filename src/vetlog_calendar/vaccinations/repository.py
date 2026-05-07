@@ -29,8 +29,8 @@ class VaccinationRepository:
 
     def find_pending_dewormings(self, months: int) -> Sequence[Vaccination]:
         stmt = select(Vaccination).where(
-            Vaccination.status == "APPLIED"
-            and Vaccination.date <= datetime.now() - timedelta(days=30 * months)
+            (Vaccination.status == "APPLIED")
+            & (Vaccination.date <= datetime.now() - timedelta(days=30 * months))
         )
         return self.session.exec(stmt).all()
 
