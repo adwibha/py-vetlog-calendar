@@ -147,7 +147,7 @@ def list_dewormings():
         for deworming in required_dewormings:
             pet = pet_repo.find_by_id(deworming.pet_id)
             print(f"Pet: {pet.name}, awaiting deworming")
-        possible_dewormings = service.get_possible_dewormings()
+        possible_dewormings = service.get_pending_dewormings(6)
         for deworming in possible_dewormings:
             pet = pet_repo.find_by_id(deworming.pet_id)
             if pet.going_out_often and deworming.pet_id not in required_pet_ids:
