@@ -44,7 +44,9 @@ def test_find_pending_dewormings():
 
     assert "status" in statement_text
     assert "date" in statement_text
+    assert "name" in statement_text
     assert any(value == "APPLIED" for value in compiled_statement.params.values())
+    assert any(value == "Deworming" for value in compiled_statement.params.values())
 
     datetime_params = [
         value
