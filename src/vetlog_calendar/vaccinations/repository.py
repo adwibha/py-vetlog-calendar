@@ -13,6 +13,7 @@
 #  limitations under the License
 
 from typing import Sequence
+from datetime import datetime, timedelta
 from sqlmodel import Session, select, update
 
 from vetlog_calendar.vaccinations.model import Vaccination
@@ -24,6 +25,13 @@ class VaccinationRepository:
 
     def find_pending_vaccinations(self) -> Sequence[Vaccination]:
         stmt = select(Vaccination).where(Vaccination.status == "NEW")
+        return self.session.exec(stmt).all()
+
+    def find_pending_dewormings(self) -> Sequence[Vaccination]:
+        stmt = select(Vaccination).where(
+            Vaccination.status == "APPLIED",
+            Vaccination.date <= datetime.now() - timedelta(days=30 * 6),
+        )
         return self.session.exec(stmt).all()
 
     def update_vaccination_status(self, vaccination: Vaccination):
