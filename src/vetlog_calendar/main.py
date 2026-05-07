@@ -128,6 +128,19 @@ def vaccinations_cli():
     list_vaccinations(language=args.language)
 
 
+def list_dewormings():
+    """List pending dewormings"""
+    with get_session() as session:
+        repo = VaccinationRepository(session)
+        service = VaccinationService(repo)
+        dewormings = service.get_pending_dewormings(6)
+        pet_repo = PetRepository(session)
+        for deworming in dewormings:
+            pet = pet_repo.find_by_id(deworming.pet_id)
+            if pet.going_out_often:
+                print(f"Pet: {pet.name}, awaiting deworming")
+
+
 def version_check():
     """Print version info"""
     print(f"{__project__} version {__version__}")
