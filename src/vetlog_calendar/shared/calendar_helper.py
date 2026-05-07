@@ -60,7 +60,7 @@ class Helper:
             ],
         }
         if "vetlog.org" in self.owner.email:
-            event["note"] = self.locale.get_description_note()
+            event["description"] = self.locale.get_description_note()
         else:
             event["description"] = f"{owner_info}\n{pet_info}\n{thank_you_info}\n{website_info}"
         return event
