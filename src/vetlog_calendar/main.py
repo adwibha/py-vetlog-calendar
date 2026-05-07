@@ -133,12 +133,16 @@ def list_dewormings():
     with get_session() as session:
         repo = VaccinationRepository(session)
         service = VaccinationService(repo)
-        dewormings = service.get_pending_dewormings(6)
+        possible_dewormings = service.get_pending_dewormings(6)
         pet_repo = PetRepository(session)
-        for deworming in dewormings:
+        for deworming in possible_dewormings:
             pet = pet_repo.find_by_id(deworming.pet_id)
             if pet.going_out_often:
                 print(f"Pet: {pet.name}, awaiting deworming")
+        required_dewormings = service.get_pending_dewormings(12)
+        for deworming in required_dewormings:
+            pet = pet_repo.find_by_id(deworming.pet_id)
+            print(f"Pet: {pet.name}, awaiting deworming")
 
 
 def version_check():
