@@ -70,6 +70,14 @@ def vaccination():
     )
 
 
+def deworming():
+    return Vaccination(
+        pet_id=1,
+        name="Deworming",
+        date=datetime(2024, 5, 21),
+    )
+
+
 def pet():
     return Pet(
         id=1,
@@ -256,6 +264,26 @@ def test_list_pets_prints_pending_vaccinations(capsys):
 
     captured = capsys.readouterr()
     expected_output = "Owner: Jose Morales, Pet: Sora, awaiting vaccination"
+    assert expected_output in captured.out
+
+
+def test_prints_pending_dewormings(capsys):
+    """List pets with pending dewormings"""
+
+    mock_session_cm = MagicMock()
+
+    with (
+        patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
+        patch(
+            "vetlog_calendar.main.VaccinationService.get_pending_dewormings",
+            return_value=[deworming()],
+        ),
+        patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet()),
+    ):
+        main.list_dewormings()
+
+    captured = capsys.readouterr()
+    expected_output = "Pet: Sora, awaiting deworming"
     assert expected_output in captured.out
 
 
