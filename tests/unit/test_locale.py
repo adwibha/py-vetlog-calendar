@@ -69,3 +69,17 @@ def test_return_english_thanks():
     locale = Locale()
     thanks = locale.get_event_thanks()
     assert thanks == "Thank you for trusting Vetlog!"
+
+
+def test_return_spanish_description_note():
+    """Test that the description note message is returned in Spanish"""
+    locale = Locale(language="es")
+    description_note = locale.get_description_note()
+    assert description_note == "Favor de dar seguimiento usando WhatsApp."
+
+
+def test_return_english_description_note():
+    """Test that the description note message is returned in English"""
+    locale = Locale()
+    description_note = locale.get_description_note()
+    assert description_note == "Please follow up by phone."

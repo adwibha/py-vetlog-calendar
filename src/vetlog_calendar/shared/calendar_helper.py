@@ -46,7 +46,6 @@ class Helper:
         event = {
             "summary": self.__get_event_title(),
             "location": self.locale.get_event_location(),
-            "description": f"{owner_info}\n{pet_info}\n{thank_you_info}\n{website_info}",
             "start": {
                 "dateTime": f"{validated_date.strftime('%Y-%m-%d')}T11:00:00-06:00",
                 "timeZone": "UTC",
@@ -60,4 +59,8 @@ class Helper:
                 *[{"email": email} for email in get_settings().DEFAULT_EMAILS],
             ],
         }
+        if "vetlog.org" in self.owner.email:
+            event["note"] = self.locale.get_description_note()
+        else:
+            event["description"] = f"{owner_info}\n{pet_info}\n{thank_you_info}\n{website_info}"
         return event
