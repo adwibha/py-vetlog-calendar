@@ -142,7 +142,9 @@ def test_list_vaccinations_no_new_vaccinations_prints_message(capsys):
         patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet()),
         patch("vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()),
     ):
-        main.list_vaccinations(calendar=mock_calendar, service=mock_service, language="en")
+        main.list_vaccinations(
+            calendar=mock_calendar, service=mock_service, language="en"
+        )
 
     mock_calendar.create_event.assert_not_called()
     mock_service.update_vaccination_status.assert_not_called()
