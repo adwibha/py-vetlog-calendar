@@ -109,6 +109,41 @@ def test_get_event_shifts_monday_date_by_two_days(pet, owner):
         assert event["end"]["dateTime"] == "2026-05-27T11:15:00-06:00"
 
 
+def test_get_event_includes_note_for_vetlog_email(pet, vaccination):
+    """Test that note is included in event when owner has @vetlog.org email"""
+    vetlog_owner = User(
+        id=8,
+        username="vetloguser",
+        first_name="Vet",
+        last_name="Log",
+        mobile="9876543210",
+        email="support@vetlog.org",
+    )
+    mock_settings = MagicMock()
+    mock_settings.DEFAULT_EMAILS = []
+    with patch(
+        "vetlog_calendar.shared.calendar_helper.get_settings",
+        return_value=mock_settings,
+    ):
+        helper = Helper(pet=pet, vaccination=vaccination, owner=vetlog_owner, language="en")
+        event = helper.get_event()
+        assert "note" in event
+        assert event["note"] == helper.locale.get_description_note()
+
+
+def test_get_event_excludes_note_for_non_vetlog_email(pet, vaccination, owner):
+    """Test that note is not included in event when owner doesn't have @vetlog.org email"""
+    mock_settings = MagicMock()
+    mock_settings.DEFAULT_EMAILS = []
+    with patch(
+        "vetlog_calendar.shared.calendar_helper.get_settings",
+        return_value=mock_settings,
+    ):
+        helper = Helper(pet=pet, vaccination=vaccination, owner=owner, language="en")
+        event = helper.get_event()
+        assert "note" not in event
+
+
 def test_settings_missing_required_vars(clean_env):
     with pytest.raises(ValidationError):
         Settings(_env_file=None)
