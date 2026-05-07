@@ -92,9 +92,17 @@ def list_vaccinations(
         if service is None:
             repo = VaccinationRepository(session)
             service = VaccinationService(repo)
+
+        vaccinations = service.get_pending_vaccinations()
+
+        # If there are no pending vaccinations, print a message and exit
+        if not vaccinations:
+            print("no new vaccinations were found")
+            return
+
         pet_repository = PetRepository(session)
         user_repository = UserRepository(session)
-        vaccinations = service.get_pending_vaccinations()
+
         for vaccination in vaccinations:
             pet = pet_repository.find_by_id(vaccination.pet_id)
 

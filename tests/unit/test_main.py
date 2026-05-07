@@ -129,6 +129,30 @@ def test_list_vaccinations(capsys, mock_env_vars):
     assert expected_description in captured.out
 
 
+def test_list_vaccinations_no_new_vaccinations_prints_message(capsys):
+    """Show message when there are no NEW vaccinations to process"""
+
+    mock_session_cm = MagicMock()
+    mock_calendar = MagicMock()
+    mock_service = MagicMock()
+    mock_service.get_pending_vaccinations.return_value = []
+
+    with (
+        patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
+        patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet()),
+        patch("vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()),
+    ):
+        main.list_vaccinations(
+            calendar=mock_calendar, service=mock_service, language="en"
+        )
+
+    mock_calendar.create_event.assert_not_called()
+    mock_service.update_vaccination_status.assert_not_called()
+
+    captured = capsys.readouterr()
+    assert captured.out.strip() == "no new vaccinations were found"
+
+
 def test_list_vaccinations_handles_pet_has_owner(capsys):
     """List pending vaccinations"""
 
