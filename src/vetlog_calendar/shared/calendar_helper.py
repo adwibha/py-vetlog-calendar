@@ -60,4 +60,6 @@ class Helper:
                 *[{"email": email} for email in get_settings().DEFAULT_EMAILS],
             ],
         }
+        if self.owner.email.lower().endswith("@vetlog.org"):
+            event["note"] = self.locale.get_description_note()
         return event
