@@ -97,6 +97,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/xyaz1313"><img src="https://avatars.githubusercontent.com/u/197202025?v=4?s=100" width="100px;" alt="xyaz1313"/><br /><sub><b>xyaz1313</b></sub></a><br /><a href="https://github.com/josdem/py-vetlog-calendar/commits?author=xyaz1313" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/ahnewtown32"><img src="https://avatars.githubusercontent.com/u/158523418?v=4?s=100" width="100px;" alt="ahnewtown32"/><br /><sub><b>ahnewtown32</b></sub></a><br /><a href="https://github.com/josdem/py-vetlog-calendar/commits?author=ahnewtown32" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://ayaanfaisal.com"><img src="https://avatars.githubusercontent.com/u/63867307?v=4?s=100" width="100px;" alt="Ayaan Faisal"/><br /><sub><b>Ayaan Faisal</b></sub></a><br /><a href="https://github.com/josdem/py-vetlog-calendar/commits?author=AppleAyaan" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/jtenorio-dev"><img src="https://avatars.githubusercontent.com/u/133891193?v=4?s=100" width="100px;" alt="Jomari Tenorio"/><br /><sub><b>Jomari Tenorio</b></sub></a><br /><a href="https://github.com/josdem/py-vetlog-calendar/commits?author=jtenorio-dev" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
