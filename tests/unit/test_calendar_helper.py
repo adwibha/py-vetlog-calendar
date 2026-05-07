@@ -125,7 +125,9 @@ def test_get_event_includes_note_for_vetlog_email(pet, vaccination):
         "vetlog_calendar.shared.calendar_helper.get_settings",
         return_value=mock_settings,
     ):
-        helper = Helper(pet=pet, vaccination=vaccination, owner=vetlog_owner, language="en")
+        helper = Helper(
+            pet=pet, vaccination=vaccination, owner=vetlog_owner, language="en"
+        )
         event = helper.get_event()
         assert "note" in event
         assert event["note"] == helper.locale.get_description_note()

@@ -42,7 +42,7 @@ class Locale:
         if self.language == "es":
             return "¡Gracias por confiar en Vetlog!"
         return "Thank you for trusting Vetlog!"
-    
+
     def get_description_note(self) -> str:
         """Get the description note based on language"""
         if self.language == "es":

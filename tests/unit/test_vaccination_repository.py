@@ -49,7 +49,9 @@ def test_find_pending_dewormings():
     assert any(value == "APPLIED" for value in compiled_statement.params.values())
 
     datetime_params = [
-        value for value in compiled_statement.params.values() if isinstance(value, datetime)
+        value
+        for value in compiled_statement.params.values()
+        if isinstance(value, datetime)
     ]
     assert len(datetime_params) == 1
 
