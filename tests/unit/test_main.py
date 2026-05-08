@@ -270,6 +270,110 @@ def test_list_vaccinations_handles_pet_is_deceased(capsys):
     assert expected_description in captured.out
 
 
+def test_list_vaccinations_handles_pet_is_inactive(capsys):
+    """Skip calendar event creation when pet status is INACTIVE"""
+
+    inactive_pet = Pet(
+        id=1,
+        user_id=1,
+        adopter_id=None,
+        name="Sora",
+        birth_date=datetime(2020, 1, 1, 0, 0, 0),
+        breed_id=1,
+        status="INACTIVE",
+        uuid="pet-uuid",
+    )
+
+    mock_session_cm = MagicMock()
+    mock_calendar = MagicMock()
+    mock_service = MagicMock()
+    vaccination_instance = vaccination()
+    mock_service.get_pending_vaccinations.return_value = [vaccination_instance]
+
+    with (
+        patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
+        patch(
+            "vetlog_calendar.main.PetRepository.find_by_id", return_value=inactive_pet
+        ),
+        patch("vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()),
+    ):
+        main.list_vaccinations(
+            calendar=mock_calendar, service=mock_service, language="en"
+        )
+
+    mock_calendar.create_event.assert_not_called()
+    mock_service.update_vaccination_status.assert_called_once_with(vaccination_instance)
+    captured = capsys.readouterr()
+    expected_description = "Jose - Vaccination appointment for Sora"
+    assert expected_description in captured.out
+
+
+def test_list_dewormings_skips_inactive_pet(capsys):
+    """Do not produce deworming output for INACTIVE pets"""
+
+    inactive_pet = Pet(
+        id=1,
+        user_id=1,
+        adopter_id=None,
+        name="Sora",
+        birth_date=datetime(2020, 1, 1, 0, 0, 0),
+        breed_id=1,
+        status="INACTIVE",
+        uuid="pet-uuid",
+        going_out_often=True,
+    )
+
+    mock_session_cm = MagicMock()
+
+    with (
+        patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
+        patch(
+            "vetlog_calendar.main.VaccinationService.get_pending_dewormings",
+            return_value=[deworming()],
+        ),
+        patch(
+            "vetlog_calendar.main.PetRepository.find_by_id", return_value=inactive_pet
+        ),
+    ):
+        main.list_dewormings()
+
+    captured = capsys.readouterr()
+    assert "awaiting deworming" not in captured.out
+
+
+def test_list_dewormings_skips_deceased_pet(capsys):
+    """Do not produce deworming output for DECEASED pets"""
+
+    deceased_pet = Pet(
+        id=1,
+        user_id=1,
+        adopter_id=None,
+        name="Sora",
+        birth_date=datetime(2020, 1, 1, 0, 0, 0),
+        breed_id=1,
+        status="DECEASED",
+        uuid="pet-uuid",
+        going_out_often=True,
+    )
+
+    mock_session_cm = MagicMock()
+
+    with (
+        patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
+        patch(
+            "vetlog_calendar.main.VaccinationService.get_pending_dewormings",
+            return_value=[deworming()],
+        ),
+        patch(
+            "vetlog_calendar.main.PetRepository.find_by_id", return_value=deceased_pet
+        ),
+    ):
+        main.list_dewormings()
+
+    captured = capsys.readouterr()
+    assert "awaiting deworming" not in captured.out
+
+
 def test_list_pets_prints_pending_vaccinations(capsys):
     """List all owners/adopters with pets waiting for vaccination"""
 
