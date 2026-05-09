@@ -150,7 +150,7 @@ def list_dewormings(service: VaccinationService = None):
         for deworming in possible_dewormings:
             pet = pet_repo.find_by_id(deworming.pet_id)
             if pet.going_out_often:
-                required_dewormings = required_dewormings + [deworming]
+                required_dewormings.append(deworming)
 
         for deworming in required_dewormings:
             pet = pet_repo.find_by_id(deworming.pet_id)
