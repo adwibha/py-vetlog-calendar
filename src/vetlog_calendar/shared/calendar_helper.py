@@ -35,7 +35,7 @@ class Helper:
         owner_name = self.owner.first_name or self.owner.username
         return self.locale.get_event_title(owner=owner_name, pet=self.pet.name)
 
-    def get_event(self) -> dict:
+    def get_vaccination_event(self) -> dict:
         owner_info = (
             f"{self.owner.first_name} {self.owner.last_name}\n{self.owner.mobile}\n"
         )

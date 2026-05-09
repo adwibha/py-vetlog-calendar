@@ -88,7 +88,7 @@ def test_get_event_description(pet, vaccination, owner):
                 {"email": "email3@example.com"},
             ],
         }
-        assert helper.get_event() == expected_description
+        assert helper.get_vaccination_event() == expected_description
 
 
 def test_get_event_shifts_monday_date_by_two_days(pet, owner):
@@ -104,7 +104,7 @@ def test_get_event_shifts_monday_date_by_two_days(pet, owner):
         helper = Helper(
             pet=pet, vaccination=monday_vaccination, owner=owner, language="en"
         )
-        event = helper.get_event()
+        event = helper.get_vaccination_event()
         assert event["start"]["dateTime"] == "2026-05-27T11:00:00-06:00"
         assert event["end"]["dateTime"] == "2026-05-27T11:15:00-06:00"
 
@@ -128,7 +128,7 @@ def test_get_event_includes_note_for_vetlog_email(pet, vaccination):
         helper = Helper(
             pet=pet, vaccination=vaccination, owner=vetlog_owner, language="en"
         )
-        event = helper.get_event()
+        event = helper.get_vaccination_event()
         assert "note" in event
         assert event["note"] == helper.locale.get_description_note()
 
@@ -142,7 +142,7 @@ def test_get_event_excludes_note_for_non_vetlog_email(pet, vaccination, owner):
         return_value=mock_settings,
     ):
         helper = Helper(pet=pet, vaccination=vaccination, owner=owner, language="en")
-        event = helper.get_event()
+        event = helper.get_vaccination_event()
         assert "note" not in event
 
 
