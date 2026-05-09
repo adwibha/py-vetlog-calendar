@@ -144,19 +144,34 @@ def list_dewormings():
         repo = VaccinationRepository(session)
         service = VaccinationService(repo)
         pet_repo = PetRepository(session)
+        user_repository = UserRepository(session)
         required_dewormings = service.get_pending_dewormings(12)
         required_pet_ids = {deworming.pet_id for deworming in required_dewormings}
         for deworming in required_dewormings:
             pet = pet_repo.find_by_id(deworming.pet_id)
+            user = (
+                user_repository.find_by_id(pet.adopter_id)
+                if pet.adopter_id is not None
+                else user_repository.find_by_id(pet.user_id)
+            )
             if pet.status not in EXCLUDED_STATUSES:
-                print(f"Pet: {pet.name}, awaiting deworming")
+                print(
+                    f"Pet: {pet.name}, awaiting deworming, please contact {user.first_name} {user.last_name} at {user.email}"
+                )
         possible_dewormings = service.get_pending_dewormings(6)
         for deworming in possible_dewormings:
             pet = pet_repo.find_by_id(deworming.pet_id)
             if pet.status in EXCLUDED_STATUSES:
                 continue
             if pet.going_out_often and deworming.pet_id not in required_pet_ids:
-                print(f"Pet: {pet.name}, awaiting deworming")
+                user = (
+                    user_repository.find_by_id(pet.adopter_id)
+                    if pet.adopter_id is not None
+                    else user_repository.find_by_id(pet.user_id)
+                )
+                print(
+                    f"Pet: {pet.name}, awaiting deworming, please contact {user.first_name} {user.last_name} at {user.email}"
+                )
 
 
 def list_deworming():
