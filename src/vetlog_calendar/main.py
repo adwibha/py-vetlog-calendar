@@ -160,6 +160,11 @@ def list_dewormings():
                 print(f"Pet: {pet.name}, awaiting deworming")
 
 
+def list_deworming():
+    """CLI entry point for list_dewormings"""
+    list_dewormings()
+
+
 def version_check():
     """Print version info"""
     print(f"{__project__} version {__version__}")

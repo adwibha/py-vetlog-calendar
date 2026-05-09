@@ -452,3 +452,10 @@ def test_prints_pending_dewormings_once_when_also_possible_for_outdoor_pet(capsy
 def test_settings_missing_required_vars(clean_env):
     with pytest.raises(ValidationError):
         Settings(_env_file=None)
+
+
+def test_list_deworming_delegates_to_list_dewormings():
+    """list_deworming() CLI entry point delegates to list_dewormings()"""
+    with patch("vetlog_calendar.main.list_dewormings") as mock:
+        main.list_deworming()
+    mock.assert_called_once()

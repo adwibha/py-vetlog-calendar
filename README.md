@@ -47,6 +47,9 @@ uv run vaccinations
 
 # Check pending vaccinations and create Google Calendar events in Spanish
 uv run vaccinations --language es
+
+# List pets with pending deworming
+uv run dewormings
 ```
 
 **Test**
