@@ -324,18 +324,17 @@ def test_list_dewormings_skips_inactive_pet(capsys):
     )
 
     mock_session_cm = MagicMock()
+    mock_service = MagicMock()
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
         patch(
-            "vetlog_calendar.main.VaccinationService.get_pending_dewormings",
-            return_value=[deworming()],
-        ),
-        patch(
             "vetlog_calendar.main.PetRepository.find_by_id", return_value=inactive_pet
         ),
     ):
-        main.list_dewormings()
+        mock_service.get_pending_dewormings(6).return_value = []
+        mock_service.get_pending_dewormings(12).return_value = [deworming()]
+        main.list_dewormings(service=mock_service)
 
     captured = capsys.readouterr()
     assert "awaiting deworming" not in captured.out
@@ -357,18 +356,17 @@ def test_list_dewormings_skips_deceased_pet(capsys):
     )
 
     mock_session_cm = MagicMock()
+    mock_service = MagicMock()
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
         patch(
-            "vetlog_calendar.main.VaccinationService.get_pending_dewormings",
-            return_value=[deworming()],
-        ),
-        patch(
             "vetlog_calendar.main.PetRepository.find_by_id", return_value=deceased_pet
         ),
     ):
-        main.list_dewormings()
+        mock_service.get_pending_dewormings(6).return_value = []
+        mock_service.get_pending_dewormings(12).return_value = [deworming()]
+        main.list_dewormings(service=mock_service)
 
     captured = capsys.readouterr()
     assert "awaiting deworming" not in captured.out
@@ -431,18 +429,17 @@ def test_prints_pending_dewormings_once_when_also_possible_for_outdoor_pet(capsy
         going_out_often=True,
     )
     deworming_instance = deworming()
+    mock_service = MagicMock()
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
         patch(
-            "vetlog_calendar.main.VaccinationService.get_pending_dewormings",
-            return_value=[deworming_instance],
-        ),
-        patch(
             "vetlog_calendar.main.PetRepository.find_by_id", return_value=outdoor_pet
         ),
     ):
-        main.list_dewormings()
+        mock_service.get_pending_dewormings(6).return_value = [deworming_instance]
+        mock_service.get_pending_dewormings(12).return_value = []
+        main.list_dewormings(service=mock_service)
 
     captured = capsys.readouterr()
     expected_output = "Pet: Sora, awaiting deworming"
