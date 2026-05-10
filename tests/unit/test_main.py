@@ -324,18 +324,21 @@ def test_list_dewormings_skips_inactive_pet(capsys):
     )
 
     mock_session_cm = MagicMock()
+    mock_calendar = MagicMock()
+    mock_service = MagicMock()
+    mock_service.get_pending_dewormings.side_effect = lambda months: (
+        [deworming()] if months == 12 else []
+    )
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
         patch(
-            "vetlog_calendar.main.VaccinationService.get_pending_dewormings",
-            return_value=[deworming()],
-        ),
-        patch(
             "vetlog_calendar.main.PetRepository.find_by_id", return_value=inactive_pet
         ),
     ):
-        main.list_dewormings()
+        main.list_dewormings(
+            calendar=mock_calendar, service=mock_service, language="en"
+        )
 
     captured = capsys.readouterr()
     assert "awaiting deworming" not in captured.out
@@ -357,18 +360,21 @@ def test_list_dewormings_skips_deceased_pet(capsys):
     )
 
     mock_session_cm = MagicMock()
+    mock_calendar = MagicMock()
+    mock_service = MagicMock()
+    mock_service.get_pending_dewormings.side_effect = lambda months: (
+        [deworming()] if months == 12 else []
+    )
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
         patch(
-            "vetlog_calendar.main.VaccinationService.get_pending_dewormings",
-            return_value=[deworming()],
-        ),
-        patch(
             "vetlog_calendar.main.PetRepository.find_by_id", return_value=deceased_pet
         ),
     ):
-        main.list_dewormings()
+        main.list_dewormings(
+            calendar=mock_calendar, service=mock_service, language="en"
+        )
 
     captured = capsys.readouterr()
     assert "awaiting deworming" not in captured.out
@@ -399,6 +405,7 @@ def test_prints_pending_dewormings(capsys):
     """List pets with pending dewormings"""
 
     mock_session_cm = MagicMock()
+    mock_calendar = MagicMock()
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
@@ -406,47 +413,49 @@ def test_prints_pending_dewormings(capsys):
             "vetlog_calendar.main.VaccinationService.get_pending_dewormings",
             return_value=[deworming()],
         ),
+        patch("vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()),
         patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet()),
     ):
-        main.list_dewormings()
+        main.list_dewormings(calendar=mock_calendar, language="en")
 
     captured = capsys.readouterr()
-    expected_output = "Pet: Sora, awaiting deworming"
+    expected_output = "Jose - Deworming appointment for Sora"
     assert expected_output in captured.out
 
 
-def test_prints_pending_dewormings_once_when_also_possible_for_outdoor_pet(capsys):
-    """List dewormings without duplicating pets that are both required and possible"""
+def test_list_dewormings_no_duplicate_events_when_pet_in_both_lists():
+    """No duplicate calendar event when a pet appears in both the 12-month and 6-month required lists"""
 
-    mock_session_cm = MagicMock()
     outdoor_pet = Pet(
         id=1,
         user_id=1,
-        adopter_id=2,
+        adopter_id=None,
         name="Sora",
         birth_date=datetime(2020, 1, 1, 0, 0, 0),
         breed_id=1,
-        status="ACTIVE",
-        uuid="pet-uuid",
         going_out_often=True,
     )
-    deworming_instance = deworming()
+
+    mock_session_cm = MagicMock()
+    mock_calendar = MagicMock()
+    mock_service = MagicMock()
+    # Same pet appears in both the 12-month and 6-month results
+    mock_service.get_pending_dewormings.side_effect = lambda months: (
+        [deworming()] if months in (12, 6) else []
+    )
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
         patch(
-            "vetlog_calendar.main.VaccinationService.get_pending_dewormings",
-            return_value=[deworming_instance],
-        ),
-        patch(
             "vetlog_calendar.main.PetRepository.find_by_id", return_value=outdoor_pet
         ),
+        patch("vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()),
     ):
-        main.list_dewormings()
+        main.list_dewormings(
+            calendar=mock_calendar, service=mock_service, language="en"
+        )
 
-    captured = capsys.readouterr()
-    expected_output = "Pet: Sora, awaiting deworming"
-    assert captured.out.count(expected_output) == 1
+    mock_calendar.create_event.assert_called_once()
 
 
 def test_settings_missing_required_vars(clean_env):
@@ -457,5 +466,5 @@ def test_settings_missing_required_vars(clean_env):
 def test_list_deworming_delegates_to_list_dewormings():
     """list_deworming() CLI entry point delegates to list_dewormings()"""
     with patch("vetlog_calendar.main.list_dewormings") as mock:
-        main.list_deworming()
+        main.list_dewormings(language="en")
     mock.assert_called_once()

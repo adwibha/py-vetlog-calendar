@@ -1,6 +1,6 @@
 [project]
 name = "py-vetlog-calendar"
-version = "1.3.2"
+version = "1.3.3"
 description = "Vetlog appointments organizer"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -28,7 +28,7 @@ paths = "vetlog_calendar.main:print_paths"
 users = "vetlog_calendar.main:list_users"
 pets = "vetlog_calendar.main:list_pets"
 vaccinations = "vetlog_calendar.main:vaccinations_cli"
-dewormings = "vetlog_calendar.main:list_deworming"
+dewormings = "vetlog_calendar.main:dewormings_cli"
 
 [build-system]
 requires = ["setuptools>=68", "wheel"]

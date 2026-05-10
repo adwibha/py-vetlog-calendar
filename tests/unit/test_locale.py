@@ -83,3 +83,37 @@ def test_return_english_description_note():
     locale = Locale()
     description_note = locale.get_description_note()
     assert description_note == "Please follow up by phone."
+
+
+def test_return_spanish_deworming_title():
+    """Test that the deworming title is returned in Spanish"""
+    locale = Locale(language="es")
+    title = locale.get_deworming_event_title(owner="Jose", pet="Sora")
+    assert title == "Jose - Cita de desparasitación para Sora"
+
+
+def test_return_english_deworming_title():
+    """Test that the deworming title is returned in English"""
+    locale = Locale()
+    title = locale.get_deworming_event_title(owner="Jose", pet="Sora")
+    assert title == "Jose - Deworming appointment for Sora"
+
+
+def test_return_spanish_deworming_description():
+    """Test that the deworming description is returned in Spanish"""
+    locale = Locale(language="es")
+    description = locale.get_deworming_description(pet="Sora", date="2024-01-01")
+    assert (
+        description
+        == "Favor de validar cita de desparasitación para Sora \n desde que la reciente fue: 2024-01-01"
+    )
+
+
+def test_return_english_deworming_description():
+    """Test that the deworming description is returned in English"""
+    locale = Locale()
+    description = locale.get_deworming_description(pet="Sora", date="2024-01-01")
+    assert (
+        description
+        == "Please validate deworming appointment for pet Sora \n since the last deworming was: 2024-01-01"
+    )

@@ -117,7 +117,7 @@ def list_vaccinations(
             helper = Helper(
                 pet=pet, vaccination=vaccination, owner=user, language=language
             )
-            event = helper.get_event()
+            event = helper.get_vaccination_event()
             if pet.status not in EXCLUDED_STATUSES:
                 calendar.create_event(event)
             service.update_vaccination_status(vaccination)
@@ -138,31 +138,56 @@ def vaccinations_cli():
     list_vaccinations(language=args.language)
 
 
-def list_dewormings():
+def list_dewormings(
+    calendar: Calendar = None, service: VaccinationService = None, language: str = "en"
+):
     """List pending dewormings"""
+    if calendar is None:
+        calendar = Calendar()
     with get_session() as session:
-        repo = VaccinationRepository(session)
-        service = VaccinationService(repo)
+        if service is None:
+            repo = VaccinationRepository(session)
+            service = VaccinationService(repo)
+        user_repo = UserRepository(session)
         pet_repo = PetRepository(session)
         required_dewormings = service.get_pending_dewormings(12)
-        required_pet_ids = {deworming.pet_id for deworming in required_dewormings}
-        for deworming in required_dewormings:
-            pet = pet_repo.find_by_id(deworming.pet_id)
-            if pet.status in EXCLUDED_STATUSES:
-                continue
-            print(f"Pet: {pet.name}, awaiting deworming")
+        required_pet_ids = {d.pet_id for d in required_dewormings}
         possible_dewormings = service.get_pending_dewormings(6)
         for deworming in possible_dewormings:
+            if deworming.pet_id not in required_pet_ids:
+                pet = pet_repo.find_by_id(deworming.pet_id)
+                if pet.going_out_often:
+                    required_dewormings.append(deworming)
+                    required_pet_ids.add(deworming.pet_id)
+
+        for deworming in required_dewormings:
             pet = pet_repo.find_by_id(deworming.pet_id)
-            if pet.status in EXCLUDED_STATUSES:
-                continue
-            if pet.going_out_often and deworming.pet_id not in required_pet_ids:
-                print(f"Pet: {pet.name}, awaiting deworming")
+            if pet.status not in EXCLUDED_STATUSES:
+                user = (
+                    user_repo.find_by_id(pet.adopter_id)
+                    if pet.adopter_id is not None
+                    else user_repo.find_by_id(pet.user_id)
+                )
+                helper = Helper(
+                    pet=pet, vaccination=deworming, owner=user, language=language
+                )
+                event = helper.get_deworming_event()
+                calendar.create_event(event)
+                print(event)
 
 
-def list_deworming():
+def dewormings_cli():
     """CLI entry point for list_dewormings"""
-    list_dewormings()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--language",
+        type=str.lower,
+        choices=["en", "es"],
+        default="en",
+        help="Language for the calendar events",
+    )
+    args = parser.parse_args()
+    list_dewormings(language=args.language)
 
 
 def version_check():
