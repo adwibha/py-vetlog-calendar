@@ -25,6 +25,12 @@ class Locale:
             return f"{owner} - Cita de vacunación para {pet}"
         return f"{owner} - Vaccination appointment for {pet}"
 
+    def get_deworming_event_title(self, owner: str, pet: str) -> str:
+        """Get the deworming event title based on language"""
+        if self.language == "es":
+            return f"{owner} - Cita de desparasitación para {pet}"
+        return f"{owner} - Deworming appointment for {pet}"
+
     def get_pet_info(self, pet: str) -> str:
         """Get the pet info based on language"""
         if self.language == "es":
@@ -48,3 +54,9 @@ class Locale:
         if self.language == "es":
             return "Favor de dar seguimiento usando WhatsApp."
         return "Please follow up by phone."
+
+    def get_deworming_description(self, pet: str, date: str) -> str:
+        """Get the deworming description based on language"""
+        if self.language == "es":
+            return f"Favor de validar cita de desparasitación para {pet} \n desde que la reciente fue: {date}"
+        return f"Please validate deworming appointment for pet {pet} \n since the last deworming was: {date}"

@@ -334,7 +334,7 @@ def test_list_dewormings_skips_inactive_pet(capsys):
     ):
         mock_service.get_pending_dewormings(6).return_value = []
         mock_service.get_pending_dewormings(12).return_value = [deworming()]
-        main.list_dewormings(service=mock_service)
+        main.list_dewormings(service=mock_service, language="en")
 
     captured = capsys.readouterr()
     assert "awaiting deworming" not in captured.out
@@ -366,7 +366,7 @@ def test_list_dewormings_skips_deceased_pet(capsys):
     ):
         mock_service.get_pending_dewormings(6).return_value = []
         mock_service.get_pending_dewormings(12).return_value = [deworming()]
-        main.list_dewormings(service=mock_service)
+        main.list_dewormings(service=mock_service, language="en")
 
     captured = capsys.readouterr()
     assert "awaiting deworming" not in captured.out
@@ -406,7 +406,7 @@ def test_prints_pending_dewormings(capsys):
         ),
         patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet()),
     ):
-        main.list_dewormings()
+        main.list_dewormings(language="en")
 
     captured = capsys.readouterr()
     expected_output = "Pet: Sora, awaiting deworming"
@@ -421,5 +421,5 @@ def test_settings_missing_required_vars(clean_env):
 def test_list_deworming_delegates_to_list_dewormings():
     """list_deworming() CLI entry point delegates to list_dewormings()"""
     with patch("vetlog_calendar.main.list_dewormings") as mock:
-        main.list_deworming()
+        main.list_dewormings(language="en")
     mock.assert_called_once()

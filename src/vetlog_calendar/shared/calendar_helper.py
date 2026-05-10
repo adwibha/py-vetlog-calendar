@@ -35,6 +35,12 @@ class Helper:
         owner_name = self.owner.first_name or self.owner.username
         return self.locale.get_event_title(owner=owner_name, pet=self.pet.name)
 
+    def __get_deworming_event_title(self) -> str:
+        owner_name = self.owner.first_name or self.owner.username
+        return self.locale.get_deworming_event_title(
+            owner=owner_name, pet=self.pet.name
+        )
+
     def get_vaccination_event(self) -> dict:
         owner_info = (
             f"{self.owner.first_name} {self.owner.last_name}\n{self.owner.mobile}\n"
@@ -57,6 +63,36 @@ class Helper:
             },
             "attendees": [
                 {"email": self.owner.email},
+                *[{"email": email} for email in get_settings().DEFAULT_EMAILS],
+            ],
+        }
+        if self.owner.email.lower().endswith("@vetlog.org"):
+            event["note"] = self.locale.get_description_note()
+        return event
+
+    def get_deworming_event(self) -> dict:
+        owner_info = (
+            f"{self.owner.first_name} {self.owner.last_name}\n{self.owner.mobile}\n"
+        )
+        pet_info = self.locale.get_pet_info(pet=self.pet.name)
+        description_info = self.locale.get_deworming_description(
+            pet=self.pet.name, date=self.vaccination.date
+        )
+        website_info = "https://vetlog.org/"
+        validated_date = date_helper.validate_date(self.vaccination.date)
+        event = {
+            "summary": self.__get_deworming_event_title(),
+            "location": self.locale.get_event_location(),
+            "description": f"{owner_info}\n{pet_info}\n{description_info}\n{website_info}",
+            "start": {
+                "dateTime": f"{validated_date.strftime('%Y-%m-%d')}T12:00:00-06:00",
+                "timeZone": "UTC",
+            },
+            "end": {
+                "dateTime": f"{validated_date.strftime('%Y-%m-%d')}T12:15:00-06:00",
+                "timeZone": "UTC",
+            },
+            "attendees": [
                 *[{"email": email} for email in get_settings().DEFAULT_EMAILS],
             ],
         }

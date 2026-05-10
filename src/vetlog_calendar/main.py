@@ -138,9 +138,10 @@ def vaccinations_cli():
     list_vaccinations(language=args.language)
 
 
-def list_dewormings(service: VaccinationService = None):
+def list_dewormings(service: VaccinationService = None, language: str = "en"):
     """List pending dewormings"""
     with get_session() as session:
+        calendar = Calendar()
         if service is None:
             repo = VaccinationRepository(session)
             service = VaccinationService(repo)
@@ -161,12 +162,26 @@ def list_dewormings(service: VaccinationService = None):
                     if pet.adopter_id is not None
                     else user_repo.find_by_id(pet.user_id)
                 )
-                print(f"Pet: {pet.name}, awaiting deworming, owner: {user.username}")
+                helper = Helper(
+                    pet=pet, vaccination=deworming, owner=user, language=language
+                )
+                event = helper.get_deworming_event()
+                calendar.create_event(event)
+                print(event)
 
 
-def list_deworming():
+def dewormings_cli():
     """CLI entry point for list_dewormings"""
-    list_dewormings()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--language",
+        type=str.lower,
+        choices=["en", "es"],
+        default="en",
+        help="Language for the calendar events",
+    )
+    args = parser.parse_args()
+    list_dewormings(language=args.language)
 
 
 def version_check():
