@@ -151,11 +151,14 @@ def list_dewormings(
         user_repo = UserRepository(session)
         pet_repo = PetRepository(session)
         required_dewormings = service.get_pending_dewormings(12)
+        required_pet_ids = {d.pet_id for d in required_dewormings}
         possible_dewormings = service.get_pending_dewormings(6)
         for deworming in possible_dewormings:
-            pet = pet_repo.find_by_id(deworming.pet_id)
-            if pet.going_out_often:
-                required_dewormings.append(deworming)
+            if deworming.pet_id not in required_pet_ids:
+                pet = pet_repo.find_by_id(deworming.pet_id)
+                if pet.going_out_often:
+                    required_dewormings.append(deworming)
+                    required_pet_ids.add(deworming.pet_id)
 
         for deworming in required_dewormings:
             pet = pet_repo.find_by_id(deworming.pet_id)

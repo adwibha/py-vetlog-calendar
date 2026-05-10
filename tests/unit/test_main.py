@@ -423,6 +423,41 @@ def test_prints_pending_dewormings(capsys):
     assert expected_output in captured.out
 
 
+def test_list_dewormings_no_duplicate_events_when_pet_in_both_lists():
+    """No duplicate calendar event when a pet appears in both the 12-month and 6-month required lists"""
+
+    outdoor_pet = Pet(
+        id=1,
+        user_id=1,
+        adopter_id=None,
+        name="Sora",
+        birth_date=datetime(2020, 1, 1, 0, 0, 0),
+        breed_id=1,
+        going_out_often=True,
+    )
+
+    mock_session_cm = MagicMock()
+    mock_calendar = MagicMock()
+    mock_service = MagicMock()
+    # Same pet appears in both the 12-month and 6-month results
+    mock_service.get_pending_dewormings.side_effect = (
+        lambda months: [deworming()] if months in (12, 6) else []
+    )
+
+    with (
+        patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
+        patch(
+            "vetlog_calendar.main.PetRepository.find_by_id", return_value=outdoor_pet
+        ),
+        patch("vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()),
+    ):
+        main.list_dewormings(
+            calendar=mock_calendar, service=mock_service, language="en"
+        )
+
+    mock_calendar.create_event.assert_called_once()
+
+
 def test_settings_missing_required_vars(clean_env):
     with pytest.raises(ValidationError):
         Settings(_env_file=None)
