@@ -326,6 +326,9 @@ def test_list_dewormings_skips_inactive_pet(capsys):
     mock_session_cm = MagicMock()
     mock_calendar = MagicMock()
     mock_service = MagicMock()
+    mock_service.get_pending_dewormings.side_effect = (
+        lambda months: [deworming()] if months == 12 else []
+    )
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
@@ -333,8 +336,6 @@ def test_list_dewormings_skips_inactive_pet(capsys):
             "vetlog_calendar.main.PetRepository.find_by_id", return_value=inactive_pet
         ),
     ):
-        mock_service.get_pending_dewormings(6).return_value = []
-        mock_service.get_pending_dewormings(12).return_value = [deworming()]
         main.list_dewormings(
             calendar=mock_calendar, service=mock_service, language="en"
         )
@@ -361,6 +362,9 @@ def test_list_dewormings_skips_deceased_pet(capsys):
     mock_session_cm = MagicMock()
     mock_calendar = MagicMock()
     mock_service = MagicMock()
+    mock_service.get_pending_dewormings.side_effect = (
+        lambda months: [deworming()] if months == 12 else []
+    )
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
@@ -368,8 +372,6 @@ def test_list_dewormings_skips_deceased_pet(capsys):
             "vetlog_calendar.main.PetRepository.find_by_id", return_value=deceased_pet
         ),
     ):
-        mock_service.get_pending_dewormings(6).return_value = []
-        mock_service.get_pending_dewormings(12).return_value = [deworming()]
         main.list_dewormings(
             calendar=mock_calendar, service=mock_service, language="en"
         )
