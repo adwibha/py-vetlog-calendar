@@ -138,10 +138,13 @@ def vaccinations_cli():
     list_vaccinations(language=args.language)
 
 
-def list_dewormings(service: VaccinationService = None, language: str = "en"):
+def list_dewormings(
+    calendar: Calendar = None, service: VaccinationService = None, language: str = "en"
+):
     """List pending dewormings"""
-    with get_session() as session:
+    if calendar is None:
         calendar = Calendar()
+    with get_session() as session:
         if service is None:
             repo = VaccinationRepository(session)
             service = VaccinationService(repo)

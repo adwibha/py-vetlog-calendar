@@ -324,6 +324,7 @@ def test_list_dewormings_skips_inactive_pet(capsys):
     )
 
     mock_session_cm = MagicMock()
+    mock_calendar = MagicMock()
     mock_service = MagicMock()
 
     with (
@@ -334,7 +335,9 @@ def test_list_dewormings_skips_inactive_pet(capsys):
     ):
         mock_service.get_pending_dewormings(6).return_value = []
         mock_service.get_pending_dewormings(12).return_value = [deworming()]
-        main.list_dewormings(service=mock_service, language="en")
+        main.list_dewormings(
+            calendar=mock_calendar, service=mock_service, language="en"
+        )
 
     captured = capsys.readouterr()
     assert "awaiting deworming" not in captured.out
@@ -356,6 +359,7 @@ def test_list_dewormings_skips_deceased_pet(capsys):
     )
 
     mock_session_cm = MagicMock()
+    mock_calendar = MagicMock()
     mock_service = MagicMock()
 
     with (
@@ -366,7 +370,9 @@ def test_list_dewormings_skips_deceased_pet(capsys):
     ):
         mock_service.get_pending_dewormings(6).return_value = []
         mock_service.get_pending_dewormings(12).return_value = [deworming()]
-        main.list_dewormings(service=mock_service, language="en")
+        main.list_dewormings(
+            calendar=mock_calendar, service=mock_service, language="en"
+        )
 
     captured = capsys.readouterr()
     assert "awaiting deworming" not in captured.out
@@ -397,6 +403,7 @@ def test_prints_pending_dewormings(capsys):
     """List pets with pending dewormings"""
 
     mock_session_cm = MagicMock()
+    mock_calendar = MagicMock()
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
@@ -404,12 +411,13 @@ def test_prints_pending_dewormings(capsys):
             "vetlog_calendar.main.VaccinationService.get_pending_dewormings",
             return_value=[deworming()],
         ),
+        patch("vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()),
         patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet()),
     ):
-        main.list_dewormings(language="en")
+        main.list_dewormings(calendar=mock_calendar, language="en")
 
     captured = capsys.readouterr()
-    expected_output = "Pet: Sora, awaiting deworming"
+    expected_output = "Jose - Deworming appointment for Sora"
     assert expected_output in captured.out
 
 
