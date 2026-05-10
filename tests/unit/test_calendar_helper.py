@@ -221,7 +221,9 @@ def test_get_deworming_event_includes_note_for_vetlog_email(pet, vaccination):
         assert event["note"] == helper.locale.get_description_note()
 
 
-def test_get_deworming_event_excludes_note_for_non_vetlog_email(pet, vaccination, owner):
+def test_get_deworming_event_excludes_note_for_non_vetlog_email(
+    pet, vaccination, owner
+):
     """Test that note is not included in deworming event when owner doesn't have @vetlog.org email"""
     mock_settings = MagicMock()
     mock_settings.DEFAULT_EMAILS = []
