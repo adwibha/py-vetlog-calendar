@@ -75,11 +75,11 @@ class Helper:
             f"{self.owner.first_name} {self.owner.last_name}\n{self.owner.mobile}\n"
         )
         pet_info = self.locale.get_pet_info(pet=self.pet.name)
+        validated_date = date_helper.validate_date(self.vaccination.date)
         description_info = self.locale.get_deworming_description(
-            pet=self.pet.name, date=self.vaccination.date
+            pet=self.pet.name, date=validated_date.strftime("%Y-%m-%d")
         )
         website_info = "https://vetlog.org/"
-        validated_date = date_helper.validate_date(self.vaccination.date)
         event = {
             "summary": self.__get_deworming_event_title(),
             "location": self.locale.get_event_location(),
