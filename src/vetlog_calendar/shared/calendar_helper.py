@@ -46,13 +46,14 @@ class Helper:
             f"{self.owner.first_name} {self.owner.last_name}\n{self.owner.mobile}\n"
         )
         pet_info = self.locale.get_pet_info(pet=self.pet.name)
+        vaccine_type_info = self.locale.get_vaccine_type(self.vaccination.name)
         thank_you_info = self.locale.get_event_thanks()
         website_info = "https://vetlog.org/"
         validated_date = date_helper.validate_date(self.vaccination.date)
         event = {
             "summary": self.__get_event_title(),
             "location": self.locale.get_event_location(),
-            "description": f"{owner_info}\n{pet_info}\n{thank_you_info}\n{website_info}",
+            "description": f"{owner_info}\n{pet_info}\n{vaccine_type_info}\n{thank_you_info}\n{website_info}",
             "start": {
                 "dateTime": f"{validated_date.strftime('%Y-%m-%d')}T11:00:00-06:00",
                 "timeZone": "UTC",

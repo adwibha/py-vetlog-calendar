@@ -60,3 +60,13 @@ class Locale:
         if self.language == "es":
             return f"Favor de validar cita de desparasitación para {pet} \n desde que la reciente fue: {date}"
         return f"Please validate deworming appointment for pet {pet} \n since the last deworming was: {date}"
+
+    VACCINE_TRANSLATIONS = {
+        "Rabies": "Rabia",
+    }
+
+    def get_vaccine_type(self, name: str) -> str:
+        """Get the vaccine type, translated if language is Spanish"""
+        if self.language == "es":
+            return self.VACCINE_TRANSLATIONS.get(name, name)
+        return name

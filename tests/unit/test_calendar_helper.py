@@ -20,6 +20,7 @@ from datetime import datetime
 
 from vetlog_calendar.pets.model import Pet
 from vetlog_calendar.shared.calendar_helper import Helper
+from vetlog_calendar.shared.locale import Locale
 from vetlog_calendar.users.model import User
 from vetlog_calendar.vaccinations.model import Vaccination
 
@@ -72,7 +73,7 @@ def test_get_event_description(pet, vaccination, owner):
         expected_description = {
             "summary": "Jose - Vaccination appointment for Sora",
             "location": "Whatever works for you",
-            "description": """Jose Morales\n1234567890\n\nVaccination appointment for Sora\n\nThank you for trusting Vetlog!\nhttps://vetlog.org/""",
+            "description": """Jose Morales\n1234567890\n\nVaccination appointment for Sora\n\nC6CV\nThank you for trusting Vetlog!\nhttps://vetlog.org/""",
             "start": {
                 "dateTime": "2026-05-21T11:00:00-06:00",
                 "timeZone": "UTC",
@@ -239,3 +240,18 @@ def test_get_deworming_event_excludes_note_for_non_vetlog_email(
 def test_settings_missing_required_vars(clean_env):
     with pytest.raises(ValidationError):
         Settings(_env_file=None)
+
+
+def test_get_vaccine_type_returns_spanish_translation():
+    """Locale translates Rabies to Rabia in Spanish"""
+    assert Locale("es").get_vaccine_type("Rabies") == "Rabia"
+
+
+def test_get_vaccine_type_returns_name_unchanged_for_english():
+    """Locale returns vaccine name unchanged in English"""
+    assert Locale("en").get_vaccine_type("Rabies") == "Rabies"
+
+
+def test_get_vaccine_type_returns_name_unchanged_for_unknown_in_spanish():
+    """Locale returns unknown vaccine name unchanged even in Spanish"""
+    assert Locale("es").get_vaccine_type("C6CV") == "C6CV"
