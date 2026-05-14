@@ -173,6 +173,7 @@ def list_dewormings(
                 )
                 event = helper.get_deworming_event()
                 calendar.create_event(event)
+                service.update_vaccination_status(deworming)
                 print(event)
 
 
