@@ -440,6 +440,7 @@ def test_list_dewormings_calls_update_vaccination_status(mock_env_vars):
     ):
         main.list_dewormings(calendar=mock_calendar, service=mock_service, language="en")
 
+    mock_calendar.create_event.assert_called_once()
     mock_service.update_vaccination_status.assert_called_once_with(deworming_instance)
 
 
