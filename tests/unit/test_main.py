@@ -438,7 +438,9 @@ def test_list_dewormings_calls_update_vaccination_status(mock_env_vars):
         patch("vetlog_calendar.main.PetRepository.find_by_id", return_value=pet()),
         patch("vetlog_calendar.main.UserRepository.find_by_id", return_value=owner()),
     ):
-        main.list_dewormings(calendar=mock_calendar, service=mock_service, language="en")
+        main.list_dewormings(
+            calendar=mock_calendar, service=mock_service, language="en"
+        )
 
     mock_calendar.create_event.assert_called_once()
     mock_service.update_vaccination_status.assert_called_once_with(deworming_instance)
