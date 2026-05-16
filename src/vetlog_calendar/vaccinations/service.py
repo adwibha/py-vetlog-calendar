@@ -12,7 +12,9 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License
 
-from vetlog_calendar.vaccinations.model import Vaccination
+from collections.abc import Sequence
+
+from vetlog_calendar.vaccinations.model import Vaccination, VaccineType
 from vetlog_calendar.vaccinations.repository import VaccinationRepository
 
 
@@ -20,9 +22,9 @@ class VaccinationService:
     def __init__(self, repository: VaccinationRepository):
         self.repository = repository
 
-    def get_pending_vaccinations(self):
+    def get_pending_vaccinations(self, type: VaccineType) -> Sequence[Vaccination]:
         """Return pending vaccinations"""
-        return self.repository.find_pending_vaccinations()
+        return self.repository.find_pending_vaccinations(type)
 
     def get_pending_dewormings(self, months: int):
         """Return pending dewormings"""

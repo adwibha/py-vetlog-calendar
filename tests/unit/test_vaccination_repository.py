@@ -60,3 +60,28 @@ def test_find_pending_dewormings():
     assert len(pending_dewormings) == 1
     assert pending_dewormings[0].id == vaccination.id
     assert pending_dewormings[0].status == "APPLIED"
+
+
+def test_find_pending_vaccinations():
+    session = MagicMock(spec=Session)
+    repository = VaccinationRepository(session)
+    vaccination = Vaccination(
+        id=1,
+        pet_id=1,
+        name="Rabies",
+        date=datetime.now(),
+        status="NEW",
+    )
+    session.exec.return_value.all.return_value = [vaccination]
+    pending_vaccinations = repository.find_pending_vaccinations("Rabies")
+    session.exec.assert_called_once()
+    statement = session.exec.call_args.args[0]
+    compiled_statement = statement.compile()
+    statement_text = str(compiled_statement)
+    assert "status" in statement_text
+    assert "name" in statement_text
+    assert any(value == "NEW" for value in compiled_statement.params.values())
+    assert any(value == "Rabies" for value in compiled_statement.params.values())
+    assert len(pending_vaccinations) == 1
+    assert pending_vaccinations[0].id == vaccination.id
+    assert pending_vaccinations[0].status == "NEW"

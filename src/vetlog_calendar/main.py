@@ -14,6 +14,8 @@
 
 import argparse
 
+from vetlog_calendar.vaccinations.model import VaccineType
+
 from .shared.calendar_helper import Helper
 from .shared.database import get_session
 from .users.repository import UserRepository
@@ -42,7 +44,9 @@ def list_users():
         vaccination_repo = VaccinationRepository(session)
         vaccination_service = VaccinationService(vaccination_repo)
 
-        pending_vaccinations = vaccination_service.get_pending_vaccinations()
+        pending_vaccinations = vaccination_service.get_pending_vaccinations(
+            VaccineType.RABIES
+        )
         pending_pet_ids = {v.pet_id for v in pending_vaccinations}
         pets = pet_repo.get_all()
         pet_with_pending_vaccinations = [
@@ -67,7 +71,9 @@ def list_pets():
         vaccination_service = VaccinationService(vaccination_repo)
         user_repo = UserRepository(session)
         pet_repo = PetRepository(session)
-        pending_vaccinations = vaccination_service.get_pending_vaccinations()
+        pending_vaccinations = vaccination_service.get_pending_vaccinations(
+            VaccineType.RABIES
+        )
 
         seen_pets = set()
         for vaccination in pending_vaccinations:
@@ -95,7 +101,7 @@ def list_vaccinations(
             repo = VaccinationRepository(session)
             service = VaccinationService(repo)
 
-        vaccinations = service.get_pending_vaccinations()
+        vaccinations = service.get_pending_vaccinations(VaccineType.RABIES)
 
         # If there are no pending vaccinations, print a message and exit
         if not vaccinations:
