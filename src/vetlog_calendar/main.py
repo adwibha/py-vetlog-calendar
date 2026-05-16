@@ -14,6 +14,8 @@
 
 import argparse
 
+from vetlog_calendar.vaccinations.model import VaccineType
+
 from .shared.calendar_helper import Helper
 from .shared.database import get_session
 from .users.repository import UserRepository
@@ -42,7 +44,7 @@ def list_users():
         vaccination_repo = VaccinationRepository(session)
         vaccination_service = VaccinationService(vaccination_repo)
 
-        pending_vaccinations = vaccination_service.get_pending_vaccinations()
+        pending_vaccinations = vaccination_service.get_pending_vaccinations(VaccineType.RABIES)
         pending_pet_ids = {v.pet_id for v in pending_vaccinations}
         pets = pet_repo.get_all()
         pet_with_pending_vaccinations = [
