@@ -326,9 +326,7 @@ def test_list_dewormings_skips_inactive_pet(capsys):
     mock_session_cm = MagicMock()
     mock_calendar = MagicMock()
     mock_service = MagicMock()
-    mock_service.get_pending_dewormings.side_effect = lambda months: (
-        [deworming()] if months == 12 else []
-    )
+    mock_service.get_pending_dewormings.return_value = [deworming()]
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
@@ -362,9 +360,7 @@ def test_list_dewormings_skips_deceased_pet(capsys):
     mock_session_cm = MagicMock()
     mock_calendar = MagicMock()
     mock_service = MagicMock()
-    mock_service.get_pending_dewormings.side_effect = lambda months: (
-        [deworming()] if months == 12 else []
-    )
+    mock_service.get_pending_dewormings.return_value = [deworming()]
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
@@ -429,9 +425,7 @@ def test_list_dewormings_calls_update_vaccination_status(mock_env_vars):
     mock_calendar = MagicMock()
     mock_service = MagicMock()
     deworming_instance = deworming()
-    mock_service.get_pending_dewormings.side_effect = lambda months: (
-        [deworming_instance] if months == 12 else []
-    )
+    mock_service.get_pending_dewormings.return_value = [deworming_instance]
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
@@ -463,9 +457,7 @@ def test_list_dewormings_no_duplicate_events_when_pet_in_both_lists():
     mock_calendar = MagicMock()
     mock_service = MagicMock()
     # Same pet appears in both the 12-month and 6-month results
-    mock_service.get_pending_dewormings.side_effect = lambda months: (
-        [deworming()] if months in (12, 6) else []
-    )
+    mock_service.get_pending_dewormings.return_value = [deworming()]
 
     with (
         patch("vetlog_calendar.main.get_session", return_value=mock_session_cm),
