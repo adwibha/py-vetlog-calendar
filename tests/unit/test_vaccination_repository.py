@@ -31,7 +31,7 @@ def test_find_pending_dewormings():
         pet_id=1,
         name="Deworming",
         date=datetime.now() - timedelta(days=30 * 7),
-        status="APPLIED",
+        status="NEW",
     )
     session.exec.return_value.all.return_value = [vaccination]
 
@@ -47,7 +47,7 @@ def test_find_pending_dewormings():
     assert "status" in statement_text
     assert "date" in statement_text
     assert "name" in statement_text
-    assert any(value == "APPLIED" for value in compiled_statement.params.values())
+    assert any(value == "NEW" for value in compiled_statement.params.values())
     assert any(value == "Deworming" for value in compiled_statement.params.values())
 
     datetime_params = [
@@ -59,7 +59,7 @@ def test_find_pending_dewormings():
     assert before_cutoff <= datetime_params[0] <= after_cutoff
     assert len(pending_dewormings) == 1
     assert pending_dewormings[0].id == vaccination.id
-    assert pending_dewormings[0].status == "APPLIED"
+    assert pending_dewormings[0].status == "NEW"
 
 
 def test_find_pending_vaccinations():

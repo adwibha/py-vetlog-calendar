@@ -23,7 +23,9 @@ class VaccinationRepository:
     def __init__(self, session: Session):
         self.session = session
 
-    def find_pending_vaccinations(self, vaccine_type: VaccineType) -> Sequence[Vaccination]:
+    def find_pending_vaccinations(
+        self, vaccine_type: VaccineType
+    ) -> Sequence[Vaccination]:
         stmt = select(Vaccination).where(
             (Vaccination.status == "NEW") & (Vaccination.name == vaccine_type)
         )
@@ -31,7 +33,7 @@ class VaccinationRepository:
 
     def find_pending_dewormings(self, months: int) -> Sequence[Vaccination]:
         stmt = select(Vaccination).where(
-            (Vaccination.status == "APPLIED")
+            (Vaccination.status == "NEW")
             & (Vaccination.name == VaccineType.DEWORMING)
             & (Vaccination.date <= datetime.now() - timedelta(days=30 * months))
         )
