@@ -35,7 +35,7 @@ def test_get_vaccinations(mock_repo):
         )
     ]
     mock_repo.find_pending_vaccinations.return_value = vaccinations
-    assert service.get_pending_vaccinations() == vaccinations
+    assert service.get_pending_vaccinations("Rabies") == vaccinations
 
 
 def test_get_dewormings(mock_repo):

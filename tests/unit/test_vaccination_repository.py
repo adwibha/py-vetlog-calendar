@@ -61,6 +61,7 @@ def test_find_pending_dewormings():
     assert pending_dewormings[0].id == vaccination.id
     assert pending_dewormings[0].status == "APPLIED"
 
+
 def test_find_pending_vaccinations():
     session = MagicMock(spec=Session)
     repository = VaccinationRepository(session)
