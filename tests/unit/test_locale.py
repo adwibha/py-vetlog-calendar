@@ -117,3 +117,18 @@ def test_return_english_deworming_description():
         description
         == "Please validate deworming appointment for pet Sora \n since the last deworming was: 2024-01-01"
     )
+
+
+def test_get_vaccine_type_returns_spanish_translation():
+    """Locale translates Rabies to Rabia in Spanish"""
+    assert Locale("es").get_vaccine_type("Rabies") == "Rabia"
+
+
+def test_get_vaccine_type_returns_name_unchanged_for_english():
+    """Locale returns vaccine name unchanged in English"""
+    assert Locale("en").get_vaccine_type("Rabies") == "Rabies"
+
+
+def test_get_vaccine_type_returns_name_unchanged_for_unknown_in_spanish():
+    """Locale returns unknown vaccine name unchanged even in Spanish"""
+    assert Locale("es").get_vaccine_type("C6CV") == "C6CV"
