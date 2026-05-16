@@ -101,7 +101,7 @@ def list_vaccinations(
             repo = VaccinationRepository(session)
             service = VaccinationService(repo)
 
-        vaccinations = service.get_pending_vaccinations()
+        vaccinations = service.get_pending_vaccinations(VaccineType.RABIES)
 
         # If there are no pending vaccinations, print a message and exit
         if not vaccinations:
