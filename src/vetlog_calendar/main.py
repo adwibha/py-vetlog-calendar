@@ -71,7 +71,9 @@ def list_pets():
         vaccination_service = VaccinationService(vaccination_repo)
         user_repo = UserRepository(session)
         pet_repo = PetRepository(session)
-        pending_vaccinations = vaccination_service.get_pending_vaccinations()
+        pending_vaccinations = vaccination_service.get_pending_vaccinations(
+            VaccineType.RABIES
+        )
 
         seen_pets = set()
         for vaccination in pending_vaccinations:
