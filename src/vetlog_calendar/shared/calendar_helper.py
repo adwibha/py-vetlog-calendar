@@ -79,11 +79,12 @@ class Helper:
         description_info = self.locale.get_deworming_description(
             pet=self.pet.name, date=validated_date.strftime("%Y-%m-%d")
         )
+        thank_you_info = self.locale.get_event_thanks()
         website_info = "https://vetlog.org/"
         event = {
             "summary": self.__get_deworming_event_title(),
             "location": self.locale.get_event_location(),
-            "description": f"{owner_info}\n{description_info}\n{website_info}",
+            "description": f"{owner_info}\n{description_info}\n{thank_you_info}\n{website_info}",
             "start": {
                 "dateTime": f"{validated_date.strftime('%Y-%m-%d')}T12:00:00-06:00",
                 "timeZone": "UTC",
