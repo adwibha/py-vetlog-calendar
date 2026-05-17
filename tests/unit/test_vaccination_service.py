@@ -47,12 +47,12 @@ def test_get_dewormings(mock_repo):
             name="Deworming",
             date=datetime(2026, 4, 21),
             pet_id=2,
-            status="APPLIED",
+            status="NEW",
         )
     ]
     mock_repo.find_pending_dewormings.return_value = dewormings
-    assert service.get_pending_dewormings(6) == dewormings
-    mock_repo.find_pending_dewormings.assert_called_once_with(6)
+    assert service.get_pending_dewormings() == dewormings
+    mock_repo.find_pending_dewormings.assert_called_once()
 
 
 def test_update_vaccination_status(mock_repo):
