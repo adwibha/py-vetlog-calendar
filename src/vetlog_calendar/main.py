@@ -157,6 +157,7 @@ def list_dewormings(
         user_repo = UserRepository(session)
         pet_repo = PetRepository(session)
         required_dewormings = service.get_pending_dewormings()
+        print(f"Found {len(required_dewormings)} pending dewormings")
 
         for deworming in required_dewormings:
             pet = pet_repo.find_by_id(deworming.pet_id)
