@@ -26,6 +26,7 @@ from .shared.calendar import Calendar
 from .shared.config import Settings
 from . import __project__, __version__
 
+
 def print_paths():
     """Print paths"""
     settings = Settings()

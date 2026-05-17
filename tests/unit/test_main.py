@@ -231,7 +231,6 @@ def test_list_vaccinations_handles_pet_has_adopter(capsys):
     assert expected_description in captured.out
 
 
-
 def test_list_dewormings_processes_inactive_pet():
     """Produce deworming calendar event for INACTIVE pets"""
 
