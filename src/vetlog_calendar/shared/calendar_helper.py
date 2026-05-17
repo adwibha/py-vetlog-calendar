@@ -75,7 +75,6 @@ class Helper:
         owner_info = (
             f"{self.owner.first_name} {self.owner.last_name}\n{self.owner.mobile}\n"
         )
-        pet_info = self.locale.get_pet_info(pet=self.pet.name)
         validated_date = date_helper.validate_date(self.vaccination.date)
         description_info = self.locale.get_deworming_description(
             pet=self.pet.name, date=validated_date.strftime("%Y-%m-%d")
@@ -84,7 +83,7 @@ class Helper:
         event = {
             "summary": self.__get_deworming_event_title(),
             "location": self.locale.get_event_location(),
-            "description": f"{owner_info}\n{pet_info}\n{description_info}\n{website_info}",
+            "description": f"{owner_info}\n{description_info}\n{website_info}",
             "start": {
                 "dateTime": f"{validated_date.strftime('%Y-%m-%d')}T12:00:00-06:00",
                 "timeZone": "UTC",
