@@ -26,9 +26,6 @@ from .shared.calendar import Calendar
 from .shared.config import Settings
 from . import __project__, __version__
 
-EXCLUDED_STATUSES = frozenset({"INACTIVE", "DECEASED"})
-
-
 def print_paths():
     """Print paths"""
     settings = Settings()
@@ -124,8 +121,7 @@ def list_vaccinations(
                 pet=pet, vaccination=vaccination, owner=user, language=language
             )
             event = helper.get_vaccination_event()
-            if pet.status not in EXCLUDED_STATUSES:
-                calendar.create_event(event)
+            calendar.create_event(event)
             service.update_vaccination_status(vaccination)
             print(event)
 
@@ -161,19 +157,18 @@ def list_dewormings(
 
         for deworming in required_dewormings:
             pet = pet_repo.find_by_id(deworming.pet_id)
-            if pet.status not in EXCLUDED_STATUSES:
-                user = (
-                    user_repo.find_by_id(pet.adopter_id)
-                    if pet.adopter_id is not None
-                    else user_repo.find_by_id(pet.user_id)
-                )
-                helper = Helper(
-                    pet=pet, vaccination=deworming, owner=user, language=language
-                )
-                event = helper.get_deworming_event()
-                calendar.create_event(event)
-                service.update_vaccination_status(deworming)
-                print(event)
+            user = (
+                user_repo.find_by_id(pet.adopter_id)
+                if pet.adopter_id is not None
+                else user_repo.find_by_id(pet.user_id)
+            )
+            helper = Helper(
+                pet=pet, vaccination=deworming, owner=user, language=language
+            )
+            event = helper.get_deworming_event()
+            calendar.create_event(event)
+            service.update_vaccination_status(deworming)
+            print(event)
 
 
 def dewormings_cli():
