@@ -58,8 +58,8 @@ class Locale:
     def get_deworming_description(self, pet: str, date: str) -> str:
         """Get the deworming description based on language"""
         if self.language == "es":
-            return f"Favor de validar cita de desparasitación para {pet} \n desde que la reciente fue: {date}"
-        return f"Please validate deworming appointment for pet {pet} \n since the last deworming was: {date}"
+            return f"Favor de validar cita de desparasitación para {pet} desde que la reciente fue: {date}\n"
+        return f"Please validate deworming appointment for pet {pet} since the last deworming was: {date}\n"
 
     VACCINE_TRANSLATIONS = {
         "Rabies": "Rabia",
